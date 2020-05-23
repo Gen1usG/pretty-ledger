@@ -1,3 +1,9 @@
+@import 'test.scss';
+$blue:blue;
+*{
+  color:$blue;
+}
+
 .App {
   text-align: center;
 }
@@ -25,7 +31,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: $red;
 }
 
 @keyframes App-logo-spin {
