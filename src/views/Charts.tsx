@@ -1,7 +1,12 @@
 import React from 'react';
+import {Layout} from '../components/Layout';
 
 function Charts() {
-  return (<h2>charts</h2>);
+  return (
+    <Layout>
+
+    </Layout>
+  );
 }
 
-export { Charts }
+export {Charts};
