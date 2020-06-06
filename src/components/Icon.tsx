@@ -1,5 +1,5 @@
 import React from 'react';
-import {SVG} from './styleComopents/SVG';
+import 'style/reset.scss'
 
 let importAll = (requireContext: __WebpackModuleApi.RequireContext) => requireContext.keys().forEach(requireContext);
 try {importAll(require.context('icons', true, /\.svg$/));} catch (error) {console.log(error);}
@@ -7,11 +7,12 @@ try {importAll(require.context('icons', true, /\.svg$/));} catch (error) {consol
 type Props = {
   name:string
 }
+
 function Icon(props:Props) {
   return (
-    <SVG>
+    <svg className={'icon'}>
       <use xlinkHref={'#'+props.name}/>
-    </SVG>
+    </svg>
   )
 }
 
