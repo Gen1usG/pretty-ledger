@@ -1,6 +1,7 @@
 import {Layout} from '../components/Layout';
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import {Tags} from '../components/Money/Tags';
 
 const CategorySection = styled.section`
     background-color: #ffda44;
@@ -24,6 +25,7 @@ const CategorySection = styled.section`
       }
     }
 `;
+
 
 type Category = '-' | '+';
 
@@ -52,6 +54,7 @@ function Money() {
           }
         )}
       </CategorySection>
+      <Tags/>
     </Layout>
   );
 }

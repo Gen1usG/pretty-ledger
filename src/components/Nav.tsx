@@ -37,16 +37,16 @@ function Nav() {
     <NavWrapper>
       <li>
         <NavLink to="/Money" activeClassName='selected'>
-          <Icon name={'money'}/> 记账
+          <Icon className='icon' name={'money'}/> 记账
         </NavLink>
       </li>
       <li>
         <NavLink to="/Statistics" activeClassName='selected'>
-          <Icon name={'statistics'}/>明细</NavLink>
+          <Icon className='icon' name={'statistics'}/>明细</NavLink>
       </li>
       <li>
         <NavLink to="/Charts" activeClassName='selected'>
-          <Icon name={'charts'}/>图表</NavLink>
+          <Icon className='icon' name={'charts'}/>图表</NavLink>
       </li>
     </NavWrapper>
   );

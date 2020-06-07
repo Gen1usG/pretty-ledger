@@ -7,6 +7,7 @@ import {Money} from './views/Money';
 
 require('icons/charts.svg');
 
+
 function App() {
   return (
     <Router>
