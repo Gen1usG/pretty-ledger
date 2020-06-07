@@ -11,7 +11,7 @@ const CategorySection = styled.section`
       border:none;
       background-color: transparent;
       font-size:22px;
-      padding:5px 10px;
+      padding:10px 10px;
       outline: none;
       position: relative;
       &.active::after{
@@ -32,8 +32,9 @@ type Category = '-' | '+';
 function Money() {
   // category
   const categoryMap = {'-': '支出', '+': '收入'};
-  const [category, setCategory] = useState('-');
+  const [category, setCategory] = useState<Category>('-');
   const categoryList:Category[] = ['-', '+'];
+
   const toggleCategory = (itemCategory: ('-' | '+')) => {
     setCategory(itemCategory)
   };
@@ -54,7 +55,7 @@ function Money() {
           }
         )}
       </CategorySection>
-      <Tags/>
+      <Tags category={category}/>
     </Layout>
   );
 }

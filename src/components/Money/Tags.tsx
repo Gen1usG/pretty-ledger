@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Icon} from '../Icon';
 import styled from 'styled-components';
 
@@ -34,8 +34,12 @@ const TagWrapper = styled.div`
   }
   
 `;
-const TagsList = ["car", "dailyNecessary", "food", "gift", "house", "medical", "relation", "shopping", "sing", "snacks", "sport", "travel"];
-const TagsListHash: { [K: string]: string } = {
+const AllTagList = {
+  '-': ["car", "dailyNecessary", "food", "gift", "house", "medical", "relation", "shopping", "sing", "snacks", "sport", "travel"],
+  '+': ["car"]
+};
+
+const tagsListHash: { [K: string]: string } = {
   "car": '汽车',
   "dailyNecessary": '日用品',
   "food": '餐饮',
@@ -51,22 +55,30 @@ const TagsListHash: { [K: string]: string } = {
   "travel": '旅行'
 };
 
-function Tags() {
+function Tags(props: { category: ('-' | '+') }) {
+  const [tagList,setTagList] = useState(AllTagList[props.category]);
   const [selectedTag, setSelectedTag] = useState('');
-  const tagSelected = (tag:string) => {
-    setSelectedTag(tag)
+  const tagSelected = (tag: string) => {
+    setSelectedTag(tag);
   };
+
+  useEffect(()=>{
+    setTagList(AllTagList[props.category])
+  },[props.category]);
+
   return (
     <TagsWrapper>
-      {TagsList.map(tag => {
+      {tagList.map(tag => {
         return (<TagWrapper key={tag}>
-          <li onClick={()=>{tagSelected(tag)}} className={tag===selectedTag?'selected':''}><Icon name={tag} className='icon'/></li>
-          {TagsListHash[tag]}</TagWrapper>);
+          <li onClick={() => {
+            tagSelected(tag);
+          }} className={tag === selectedTag ? 'selected' : ''}><Icon name={tag} className='icon'/></li>
+          {tagsListHash[tag]}</TagWrapper>);
       })}
       <TagWrapper>
         <li><Icon name='setting' className='icon'/></li>
-        {TagsListHash['setting']}</TagWrapper>
-      </TagsWrapper>
+        {tagsListHash['setting']}</TagWrapper>
+    </TagsWrapper>
   );
 }
 
