@@ -5,7 +5,7 @@ import React from 'react';
 
 const NavWrapper = styled.ul`
   display: flex;
-  box-shadow:rgba(0,0,0,.2) 0 1px 5px 0;
+  background: #fff;
   > li{
     width: 33.33%;
     >a {
@@ -20,7 +20,7 @@ const NavWrapper = styled.ul`
           height: 26px;
           vertical-align: -0.15em;
           fill: black;
-           overflow: hidden;
+          overflow: hidden;
        }
       &.selected{
         color:#f60;

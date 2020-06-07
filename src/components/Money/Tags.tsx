@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Icon} from '../Icon';
 import styled from 'styled-components';
 
 const TagsWrapper = styled.ul`
-  width: 100%;
+  overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
 `;
@@ -11,13 +11,12 @@ const TagWrapper = styled.div`
   width: 25%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   font-size: 12px;
   color:#222;
   margin: 12px 0;
   > li{
-    background-color: #ccc;
+    background-color: #f5f5f5;
     border-radius: 50%;
     padding:10px;
     margin-bottom: 3px;
@@ -25,7 +24,7 @@ const TagWrapper = styled.div`
      width: 30px;
      height: 30px;
      vertical-align: -0.15em;
-     fill: #222;
+     fill: #4f4e4e;
      overflow: hidden;
     }
     &.selected{
@@ -62,12 +61,18 @@ function Tags(props: { category: ('-' | '+') }) {
     setSelectedTag(tag);
   };
 
+  const refTagWrapper:any  = useRef(null);
+
+  useEffect(()=>{
+    refTagWrapper.current.style.height = (window.screen.height - 57 - 245 - 54) + 'px'
+  },[]);
+
   useEffect(()=>{
     setTagList(AllTagList[props.category])
   },[props.category]);
 
   return (
-    <TagsWrapper>
+    <TagsWrapper ref={refTagWrapper}>
       {tagList.map(tag => {
         return (<TagWrapper key={tag}>
           <li onClick={() => {

@@ -2,11 +2,13 @@ import {Layout} from '../components/Layout';
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Tags} from '../components/Money/Tags';
+import {Numpad} from '../components/Money/Numpad';
 
 const CategorySection = styled.section`
     background-color: #ffda44;
     display: flex;
     justify-content: center;
+    margin-bottom: 5px;
     > button{
       border:none;
       background-color: transparent;
@@ -33,10 +35,10 @@ function Money() {
   // category
   const categoryMap = {'-': '支出', '+': '收入'};
   const [category, setCategory] = useState<Category>('-');
-  const categoryList:Category[] = ['-', '+'];
+  const categoryList: Category[] = ['-', '+'];
 
   const toggleCategory = (itemCategory: ('-' | '+')) => {
-    setCategory(itemCategory)
+    setCategory(itemCategory);
   };
 
   return (
@@ -49,13 +51,15 @@ function Money() {
                       onClick={() => {
                         toggleCategory(item);
                       }}
-                      className={item===category?'active':''}
+                      className={item === category ? 'active' : ''}
               >{categoryMap[item]}</button>
             );
           }
         )}
       </CategorySection>
       <Tags category={category}/>
+      <Numpad/>
+
     </Layout>
   );
 }
