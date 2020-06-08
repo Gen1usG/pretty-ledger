@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Icon} from '../Icon';
 
@@ -41,7 +41,7 @@ const NumpadWrapper = styled.section`
           text-overflow: ellipsis;
         }
         &:nth-child(3){
-          font-size: 20px;
+          font-size: 22px;
           text-align: right;
           width: 35%;
           padding-right: 8px;
@@ -49,9 +49,14 @@ const NumpadWrapper = styled.section`
       }
     }
     .numberCounter{
-        display: flex;
-        flex-wrap: wrap;
+          &::after{
+            content:'';
+            clear:both;
+            display: block;
+          }
         > button{
+          float: left;
+          box-sizing: border-box;
           border:.5px solid #d5d5d5;
           background-color: #f5f5f5;
           outline: none;
@@ -68,13 +73,22 @@ const NumpadWrapper = styled.section`
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 10%)
-          }       
+          }   
+          &.yellowButton{
+            float: right;
+            background-color: #ffda44;
+            height: 150px;
+          }
         }
      }
-    
 `;
 
 function Numpad() {
+  const [account, setAccount] = useState('0');
+  const changeAccount = (value: string) => {
+
+
+  };
   return (
     <NumpadWrapper>
       <div className="topWrapper">
@@ -82,27 +96,65 @@ function Numpad() {
           <Icon name='remark'/>
           备注:
         </div>
-        <input type="text" placeholder='写点什么吧'/>
-        <input type="text"/>
+        <input id='note' type="text" placeholder='写点什么吧'/>
+        <input id='amount' type="text" disabled value={account}/>
       </div>
 
       <div className="numberCounter">
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>清除</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>+</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>-</button>
-        <button>.</button>
-        <button>0</button>
-        <button><Icon name='delete'/></button>
-        <button>完成</button>
+        <button onClick={() => {
+          changeAccount('7');
+        }}>7
+        </button>
+        <button onClick={() => {
+          changeAccount('8');
+        }}>8
+        </button>
+        <button onClick={() => {
+          changeAccount('9');
+        }}>9
+        </button>
+        <button onClick={() => {
+          changeAccount('clear');
+        }}>清除
+        </button>
+        <button onClick={() => {
+          changeAccount('4');
+        }}>4
+        </button>
+        <button onClick={() => {
+          changeAccount('5');
+        }}>5
+        </button>
+        <button onClick={() => {
+          changeAccount('6');
+        }}>6
+        </button>
+        <button className='yellowButton'>完成</button>
+        <button onClick={() => {
+          changeAccount('1');
+        }}>1
+        </button>
+        <button onClick={() => {
+          changeAccount('2');
+        }}>2
+        </button>
+        <button onClick={() => {
+          changeAccount('3');
+        }}>3
+        </button>
+
+        <button onClick={() => {
+          changeAccount('.');
+        }}>.
+        </button>
+        <button onClick={() => {
+          changeAccount('0');
+        }}>0
+        </button>
+        <button onClick={() => {
+          changeAccount('delete');
+        }}><Icon name='delete'/></button>
+
       </div>
     </NumpadWrapper>
   );
