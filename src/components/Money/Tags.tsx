@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Icon} from '../Icon';
 import styled from 'styled-components';
+import {useTags} from 'lib/useTags';
 
 const TagsWrapper = styled.ul`
   overflow-y: auto;
@@ -31,58 +32,40 @@ const TagWrapper = styled.div`
     background-color: #ffda44;
     }
   }
-  
 `;
-const AllTagList = {
-  '-': ["car", "dailyNecessary", "food", "gift", "house", "medical", "relation", "shopping", "sing", "snacks", "sport", "travel"],
-  '+': ["car"]
-};
 
-const tagsListHash: { [K: string]: string } = {
-  "car": '汽车',
-  "dailyNecessary": '日用品',
-  "food": '餐饮',
-  "gift": '礼物',
-  "house": '居住',
-  "medical": '医疗',
-  "relation": '人情',
-  "setting": '自定义',
-  "shopping": '购物',
-  "sing": '娱乐',
-  "snacks": '零食',
-  "sport": '运动',
-  "travel": '旅行'
-};
 
-function Tags(props: { category: ('-' | '+') }) {
-  const [tagList,setTagList] = useState(AllTagList[props.category]);
-  const [selectedTag, setSelectedTag] = useState('');
-  const tagSelected = (tag: string) => {
-    setSelectedTag(tag);
+
+function Tags(props: { category: ( '-' | '+') }) {
+  const {getTags} = useTags();
+  const [tagList, setTagList] = useState(getTags().filter(t => t.category === props.category ));
+  const [selectedTag, setSelectedTag] = useState<number>(0);
+  const tagSelected = (tagId:number) => {
+    setSelectedTag(tagId);
   };
 
-  const refTagWrapper:any  = useRef(null);
+  const refTagWrapper: any = useRef(null);
 
-  useEffect(()=>{
-    refTagWrapper.current.style.height = (window.screen.height - 57 - 245 - 54) + 'px'
-  },[]);
+  useEffect(() => {
+    refTagWrapper.current.style.height = (window.screen.height - 57 - 245 - 54) + 'px';
+  }, []);
 
-  useEffect(()=>{
-    setTagList(AllTagList[props.category])
-  },[props.category]);
+  useEffect(() => {
+    setTagList(getTags().filter(t => t.category === props.category ));
+  }, [props.category]);
 
   return (
     <TagsWrapper ref={refTagWrapper}>
       {tagList.map(tag => {
-        return (<TagWrapper key={tag}>
+        return (<TagWrapper key={tag.id}>
           <li onClick={() => {
-            tagSelected(tag);
-          }} className={tag === selectedTag ? 'selected' : ''}><Icon name={tag} className='icon'/></li>
-          {tagsListHash[tag]}</TagWrapper>);
+            tagSelected(tag.id);
+          }} className={tag.id === selectedTag ? 'selected' : ''}><Icon name={tag.name} className='icon'/></li>
+          {tag.tagName}</TagWrapper>);
       })}
       <TagWrapper>
         <li><Icon name='setting' className='icon'/></li>
-        {tagsListHash['setting']}</TagWrapper>
+        自定义</TagWrapper>
     </TagsWrapper>
   );
 }

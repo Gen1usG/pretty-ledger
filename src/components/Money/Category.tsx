@@ -26,7 +26,6 @@ const CategorySection = styled.section`
 `;
 
 type Category = '-' | '+';
-
 type Props = {
   category : Category;
   toggleCategory:(category:Category)=>void;
@@ -34,6 +33,7 @@ type Props = {
 function Category(props:Props) {
   const categoryMap = {'-': '支出', '+': '收入'};
   const categoryList: Category[] = ['-', '+'];
+
 
   return (<CategorySection>
     {categoryList.map(
