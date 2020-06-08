@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Icon} from '../Icon';
+import {changeAccount} from '../../lib/changeAccount';
 
 const NumpadWrapper = styled.section`
     background-color: #f5f5f5;
@@ -85,42 +86,8 @@ const NumpadWrapper = styled.section`
 
 function Numpad() {
   const [account, setAccount] = useState('0');
-  const changeAccount = (value: string) => {
-    switch (value) {
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-      case '8':
-      case '9':
-        if(account.length>=10){
-          return account
-        }
-        if (account === '0') {
-          return value;
-        } else {
-          return account + value;
-        }
-      case '.':
-        if (account.indexOf('.') >= 0) {
-          return account;
-        }
-        return account + '.';
-      case 'delete':
-        if (account.length === 1) {
-          return '0';
-        } else {
-          return account.slice(0, -1) || '';
-        }
-      case 'clear':
-        return '0';
-      default:
-        return '';
-    }
+  const inputValue = (value: string) => {
+    return changeAccount(value,account)
   };
 
 return (
@@ -136,57 +103,57 @@ return (
 
     <div className="numberCounter">
       <button onClick={() => {
-        setAccount(changeAccount('7'));
+        setAccount(inputValue('7'));
       }}>7
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('8'));
+        setAccount(inputValue('8'));
       }}>8
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('9'));
+        setAccount(inputValue('9'));
       }}>9
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('clear'));
+        setAccount(inputValue('clear'));
       }}>清除
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('4'));
+        setAccount(inputValue('4'));
       }}>4
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('5'));
+        setAccount(inputValue('5'));
       }}>5
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('6'));
+        setAccount(inputValue('6'));
       }}>6
       </button>
       <button className='yellowButton'>完成</button>
       <button onClick={() => {
-        setAccount(changeAccount('1'));
+        setAccount(inputValue('1'));
       }}>1
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('2'));
+        setAccount(inputValue('2'));
       }}>2
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('3'));
+        setAccount(inputValue('3'));
       }}>3
       </button>
 
       <button onClick={() => {
-        setAccount(changeAccount('.'));
+        setAccount(inputValue('.'));
       }}>.
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('0'));
+        setAccount(inputValue('0'));
       }}>0
       </button>
       <button onClick={() => {
-        setAccount(changeAccount('delete'));
+        setAccount(inputValue('delete'));
       }}><Icon name='delete'/></button>
 
     </div>
