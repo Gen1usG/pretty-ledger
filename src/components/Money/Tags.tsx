@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Icon} from '../Icon';
 import styled from 'styled-components';
 import {useTags} from 'lib/useTags';
+import {Tag} from '../../lib/TagList';
+import {Record} from '../../views/Money';
 
 const TagsWrapper = styled.ul`
   overflow-y: auto;
@@ -34,25 +36,31 @@ const TagWrapper = styled.div`
   }
 `;
 
+type Props = {
+  category: ('-' | '+')
+  tag: Tag | {}
+  onChange: (value: Partial<Record>) => void
+}
 
-
-function Tags(props: { category: ( '-' | '+') }) {
+function Tags(props: Props) {
   const {getTags} = useTags();
-  const [tagList, setTagList] = useState(getTags().filter(t => t.category === props.category ));
+  const [tagList, setTagList] = useState(getTags().filter(t => t.category === props.category));
   const [selectedTag, setSelectedTag] = useState<number>(0);
-  const tagSelected = (tagId:number) => {
+  const tagSelected = (tagId: number) => {
     setSelectedTag(tagId);
   };
 
   const refTagWrapper: any = useRef(null);
+
 
   useEffect(() => {
     refTagWrapper.current.style.height = (window.screen.height - 57 - 245 - 54) + 'px';
   }, []);
 
   useEffect(() => {
-    setTagList(getTags().filter(t => t.category === props.category ));
+    setTagList(getTags().filter(t => t.category === props.category));
   }, [props.category]);
+
 
   return (
     <TagsWrapper ref={refTagWrapper}>
@@ -60,6 +68,7 @@ function Tags(props: { category: ( '-' | '+') }) {
         return (<TagWrapper key={tag.id}>
           <li onClick={() => {
             tagSelected(tag.id);
+            props.onChange({tag: tag.id})
           }} className={tag.id === selectedTag ? 'selected' : ''}><Icon name={tag.name} className='icon'/></li>
           {tag.tagName}</TagWrapper>);
       })}

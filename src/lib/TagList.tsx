@@ -1,6 +1,6 @@
 import {createId} from './createId';
 
-type Tag = {
+export type Tag = {
   id: number
   name: string
   tagName: string;
