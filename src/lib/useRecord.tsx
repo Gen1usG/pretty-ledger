@@ -7,6 +7,7 @@ function useRecord() {
   };
   const createRecord = (newRecord: Record) => {
     const record = getRecord();
+    newRecord.createAt = new Date().toISOString();
     record.push(newRecord);
     window.localStorage.setItem('records', JSON.stringify(record));
   };
