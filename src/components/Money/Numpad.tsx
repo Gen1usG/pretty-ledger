@@ -8,15 +8,21 @@ type Props = {
   note: string;
   account: number;
   onChange: (value: Partial<Record>) => void
+  onSubmit: () => void
 }
+
 
 function Numpad(props: Props) {
   const [account, setAccount] = useState('0');
   const inputValue = (value: string) => {
-    return changeAccount(value, account);
+    const newAccount = changeAccount(value, account);
+    props.onChange({account: parseFloat(newAccount)});
+    return newAccount;
   };
+
   const okSubmit = () => {
-    props.onChange({account:parseFloat(account)})
+
+    props.onSubmit();
   };
 
   return (
@@ -29,7 +35,7 @@ function Numpad(props: Props) {
         <input id='note' type="text" placeholder='写点什么吧'
                onBlur={(e) => {
                  props.onChange({note: e.target.value});
-        }}/>
+               }}/>
         <input id='amount' type="text" disabled value={account}/>
       </div>
 

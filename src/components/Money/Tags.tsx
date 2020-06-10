@@ -38,7 +38,7 @@ const TagWrapper = styled.div`
 
 type Props = {
   category: ('-' | '+')
-  tag: Tag | {}
+  tag: Tag | undefined
   onChange: (value: Partial<Record>) => void
 }
 
@@ -68,7 +68,7 @@ function Tags(props: Props) {
         return (<TagWrapper key={tag.id}>
           <li onClick={() => {
             tagSelected(tag.id);
-            props.onChange({tag: tag.id})
+            props.onChange({tag: tag})
           }} className={tag.id === selectedTag ? 'selected' : ''}><Icon name={tag.name} className='icon'/></li>
           {tag.tagName}</TagWrapper>);
       })}
