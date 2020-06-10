@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Icon} from '../Icon';
 import {changeAccount} from '../../lib/changeAccount';
 import {NumpadWrapper} from '../styledComponent/NumpadWrapper';
@@ -13,15 +13,26 @@ type Props = {
 
 
 function Numpad(props: Props) {
-  const [account, setAccount] = useState('0');
+  const [account, setAccount] = useState(props.account.toString());
   const inputValue = (value: string) => {
     const newAccount = changeAccount(value, account);
     props.onChange({account: parseFloat(newAccount)});
     return newAccount;
   };
 
-  const okSubmit = () => {
+  const noteInput: any = useRef(null);
 
+  useEffect(() => {
+    setAccount(props.account.toString());
+  }, [setAccount, props.account]);
+
+  useEffect(() => {
+    if(props.note===''){
+      noteInput.current.value = props.note
+    }
+  }, [ props.note]);
+
+  const okSubmit = () => {
     props.onSubmit();
   };
 
@@ -33,9 +44,12 @@ function Numpad(props: Props) {
           备注:
         </div>
         <input id='note' type="text" placeholder='写点什么吧'
+               defaultValue={props.note}
                onBlur={(e) => {
                  props.onChange({note: e.target.value});
-               }}/>
+               }}
+               ref={noteInput}
+        />
         <input id='amount' type="text" disabled value={account}/>
       </div>
 

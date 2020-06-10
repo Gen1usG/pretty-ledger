@@ -38,20 +38,16 @@ const TagWrapper = styled.div`
 
 type Props = {
   category: ('-' | '+')
-  tag: Tag | undefined
+  tag: Tag
   onChange: (value: Partial<Record>) => void
 }
 
 function Tags(props: Props) {
   const {getTags} = useTags();
   const [tagList, setTagList] = useState(getTags().filter(t => t.category === props.category));
-  const [selectedTag, setSelectedTag] = useState<number>(0);
-  const tagSelected = (tagId: number) => {
-    setSelectedTag(tagId);
-  };
+  const [selectedTag, setSelectedTag] = useState<number>(props.tag.id);
 
   const refTagWrapper: any = useRef(null);
-
 
   useEffect(() => {
     refTagWrapper.current.style.height = (window.screen.height - 57 - 245 - 54) + 'px';
@@ -61,14 +57,18 @@ function Tags(props: Props) {
     setTagList(getTags().filter(t => t.category === props.category));
   }, [props.category]);
 
+  useEffect(() => {
+    setSelectedTag(props.tag.id);
+  }, [props.tag.id]);
+
 
   return (
     <TagsWrapper ref={refTagWrapper}>
       {tagList.map(tag => {
         return (<TagWrapper key={tag.id}>
           <li onClick={() => {
-            tagSelected(tag.id);
-            props.onChange({tag: tag})
+            setSelectedTag(tag.id);
+            props.onChange({tag: tag});
           }} className={tag.id === selectedTag ? 'selected' : ''}><Icon name={tag.name} className='icon'/></li>
           {tag.tagName}</TagWrapper>);
       })}

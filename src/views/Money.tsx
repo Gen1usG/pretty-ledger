@@ -7,7 +7,7 @@ import {Tag} from '../lib/TagList';
 import {useRecord} from '../lib/useRecord';
 
 export type Record = {
-  tag: Tag | undefined
+  tag: Tag
   note: string
   account: number
   category: '-' | '+'
@@ -18,8 +18,9 @@ function Money() {
   const {createRecord} = useRecord();
   const [category, setCategory] = useState<('-' | '+')>('-');
   const [record, setRecord] = useState<Record>({
-    tag: undefined, note: '', account: 0, category: category, createAt: ''
+    tag: {id: 0, name: '', tagName: '', category: '-'}, note: '', account: 0, category: category, createAt: ''
   });
+
   const toggleCategory = (itemCategory: ('-' | '+')) => {
     setCategory(itemCategory);
     setRecord({...record, category: itemCategory});
@@ -28,11 +29,14 @@ function Money() {
   const onChange = (value: Partial<Record>) => {
     setRecord({...record, ...value});
   };
+
   const onSubmit = () => {
-    if (!(record.tag)) return alert('请选择一个标签');
+    if (record.tag.id===0) return alert('请选择一个标签');
     if (record.account === 0) return alert('请输入金额');
-    console.log(record);
     createRecord(record);
+    setRecord({
+      tag: {id: 0, name: '', tagName: '', category: '-'}, note: '', account: 0, category: category, createAt: ''
+    })
   };
 
 
