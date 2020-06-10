@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {useTags} from 'lib/useTags';
 import {Tag} from '../../lib/TagList';
 import {Record} from '../../views/Money';
+import {Link} from 'react-router-dom';
 
 const TagsWrapper = styled.ul`
   overflow-y: auto;
@@ -18,7 +19,13 @@ const TagWrapper = styled.div`
   font-size: 12px;
   color:#222;
   margin: 12px 0;
-  > li{
+  > a { 
+    font-size: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  li{
     background-color: #f5f5f5;
     border-radius: 50%;
     padding:10px;
@@ -73,10 +80,12 @@ function Tags(props: Props) {
           {tag.tagName}</TagWrapper>);
       })}
       <TagWrapper>
-        <li><Icon name='setting' className='icon'/></li>
-        自定义</TagWrapper>
-    </TagsWrapper>
-  );
+        <Link to={`/CustomTag/${props.category}`}>
+          <li><Icon name='setting' className='icon'/></li>
+          自定义 </Link></TagWrapper>
+</TagsWrapper>
+)
+  ;
 }
 
 export {Tags};

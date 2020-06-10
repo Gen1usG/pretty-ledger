@@ -4,6 +4,7 @@ import {Statistics} from './views/Statistics';
 import {Charts} from './views/Charts';
 import {NoMatch} from './views/NoMatch';
 import {Money} from './views/Money';
+import {CustomTag} from './views/CustomTag';
 
 require('icons/charts.svg');
 
@@ -23,6 +24,9 @@ function App() {
         </Route>
         <Route exact path="/Charts">
           <Charts/>
+        </Route>
+        <Route exact path="/CustomTag/:category">
+          <CustomTag/>
         </Route>
         <Route>
           <NoMatch/>
