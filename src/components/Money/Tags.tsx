@@ -51,7 +51,7 @@ type Props = {
 
 function Tags(props: Props) {
   const {tags} = useTags();
-  const [tagList, setTagList] = useState(tags.filter(t => t.category === props.category).filter(t=>t.show));
+  const [tagList, setTagList] = useState(tags.filter(t => t.category === props.category).filter(t => t.show));
   const [selectedTag, setSelectedTag] = useState<number>(props.tag.id!);
 
   const refTagWrapper: any = useRef(null);
@@ -60,9 +60,11 @@ function Tags(props: Props) {
     refTagWrapper.current.style.height = (window.screen.height - 57 - 245 - 54) + 'px';
   }, []);
 
+
+
   useEffect(() => {
     setTagList(tags.filter(t => t.category === props.category));
-  }, [props.category]);
+  }, [props.category,tags]);
 
   useEffect(() => {
     setSelectedTag(props.tag.id!);
@@ -83,9 +85,9 @@ function Tags(props: Props) {
         <Link to={`/CustomTag/${props.category}`}>
           <li><Icon name='setting' className='icon'/></li>
           自定义 </Link></TagWrapper>
-</TagsWrapper>
-)
-  ;
+    </TagsWrapper>
+  )
+    ;
 }
 
 export {Tags};

@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 
 function useTags() {
   const [tags, setTags] = useState<Tag[]>([]);
-  console.log(tags);
+
   useEffect(() => {
     let localTags = JSON.parse(window.localStorage.getItem('Tags') || '[]');
     if (localTags.length === 0) {
@@ -21,7 +21,14 @@ function useTags() {
     window.localStorage.setItem('Tags', JSON.stringify(newTagsList));
   };
 
-  return {tags, findTag, saveTags};
+
+  const updateTags = (newTags: Tag[]) => {
+    const temp = JSON.parse(JSON.stringify(newTags));
+    saveTags(temp);
+    setTags(temp);
+  };
+
+  return {tags, findTag, saveTags, updateTags};
 }
 
 export {useTags};

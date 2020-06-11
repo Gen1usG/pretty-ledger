@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Icon} from '../components/Icon';
 import {CategoryBar} from '../components/CategoryBar';
@@ -38,7 +38,7 @@ const CustomTagWrapper = styled.section`
     .tags-stage{
       flex-grow: 1;
       overflow: auto;
-      .showTags{
+      .showTags,.unshowTags{
         li{
           box-shadow: 0 -1px 2px -1.5px rgba(0,0,0,0.5);
           padding: 6px 0;
@@ -114,20 +114,30 @@ function CustomTag() {
   const {category: paramsCategory} = useParams();
   const [category, setCategory] = useState(paramsCategory);
   const history = useHistory();
-  const {tags, findTag, saveTags} = useTags();
-  const defaultTagList = tags.filter(t => t.category === category);
-  const [showTagList, setShowTagList] = useState(defaultTagList.filter(t => t.show));
-  const unshowTagList = defaultTagList.filter(t => !t.show);
-
+  const {tags, findTag, updateTags} = useTags();
+  const [showTagList, setShowTagList] = useState<Tag[]>([]);
+  const [unshowTagList, setUnshowTagList] = useState<Tag[]>([]);
   const onChangeCategory = (value: '-' | '+') => {
     setCategory(value);
   };
+
+  useEffect(() => {
+    const defaultTagList = tags.filter(t => t.category === category);
+    setShowTagList(defaultTagList.filter(t => t.show));
+    setUnshowTagList(defaultTagList.filter(t => !t.show));
+  }, [tags, category]);
+
   const toggleShowTags = (tag: Partial<Tag>) => {
     // 删除标签
     if (tag.show) {
       // 删除默认标签
       if (!tag.custom) {
-
+        const target = findTag(tag.id!);
+        const index = tags.indexOf(target);
+        const clone = JSON.parse(JSON.stringify(target));
+        clone.show = false;
+        tags.splice(index, 1, clone);
+        updateTags(tags);
       }
     }
   };
@@ -162,7 +172,22 @@ function CustomTag() {
           </ul>
 
         </div>
-        <div className="unshowTags"></div>
+        <div className="unshowTags">
+          ---
+          <ul>
+            {unshowTagList.map(t => {
+              return (
+                <li key={t.id}>
+                  <button onClick={() => toggleShowTags(t)}/>
+                  <div>
+                    <div className='iconWrapper'><Icon name={t.name} className='icon'/></div>
+                    {t.tagName}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
       <div className='addTagsButton'>
         <button><Icon name='add' className='icon'/>添加类型</button>
