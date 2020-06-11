@@ -51,7 +51,7 @@ type Props = {
 
 function Tags(props: Props) {
   const {tags} = useTags();
-  const [tagList, setTagList] = useState(tags.filter(t => t.category === props.category).filter(t => t.show));
+  const [tagList, setTagList] = useState<Tag[]>([]);
   const [selectedTag, setSelectedTag] = useState<number>(props.tag.id!);
 
   const refTagWrapper: any = useRef(null);
@@ -61,9 +61,8 @@ function Tags(props: Props) {
   }, []);
 
 
-
   useEffect(() => {
-    setTagList(tags.filter(t => t.category === props.category));
+    setTagList(tags.filter(t => t.category === props.category).filter(t => t.show));
   }, [props.category,tags]);
 
   useEffect(() => {
