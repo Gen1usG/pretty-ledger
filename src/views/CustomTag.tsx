@@ -10,6 +10,10 @@ const CustomTagWrapper = styled.section`
     display: flex;
     flex-direction: column;
     height: 100vh;
+    .icon {
+      vertical-align: -0.15em;
+      overflow: hidden;
+    }
     .topBar{
        background-color: #ffda44;
        display: flex;
@@ -21,9 +25,7 @@ const CustomTagWrapper = styled.section`
         .icon{
           width: 26px;
           height: 26px;
-          vertical-align: -0.15em;
           fill: black;
-          overflow: hidden;
         }
         display: flex;
         font-size: 20px;
@@ -38,6 +40,16 @@ const CustomTagWrapper = styled.section`
     .tags-stage{
       flex-grow: 1;
       overflow: auto;
+      .showTags button::after{
+         content: '';
+         background-color: #fff;
+         display: block;
+         margin: 0 auto;
+         height: 2px;
+         width: 14px;
+         border:1px solid #fff;  
+            
+      }
       .showTags,.unshowTags{
         li{
           box-shadow: 0 -1px 2px -1.5px rgba(0,0,0,0.5);
@@ -52,20 +64,11 @@ const CustomTagWrapper = styled.section`
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            &::after{
-              content: '';
-              background-color: #fff;
-              display: block;
-              margin: 0 auto;
-              height: 2px;
-              width: 14px;
-              border:1px solid #fff;  
-            }
           }
           >div{
-          display: flex;
-          align-items: center;
-          font-size: 14px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
           }
           .iconWrapper{
               margin: 0 8px;
@@ -80,11 +83,30 @@ const CustomTagWrapper = styled.section`
              .icon{
                 width: 18px;
                 height: 18px;
-                vertical-align: -0.15em;
                 fill: #333;
-                overflow: hidden;
              }
           }
+          &:first-child{
+            box-shadow: none;
+          }
+        }
+      }
+      .unshowTags{
+        > div{
+          margin: 10px 0 0 6px;
+          font-size: 14px;
+          color: #666;
+        }
+        button{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          > .icon{
+            width: 16px;
+            height: 16px;
+            fill: #fff;  
+          }
+          background-color: green !important;
         }
       }
     }
@@ -102,9 +124,7 @@ const CustomTagWrapper = styled.section`
         .icon{
           width: 17px;
           height: 17px;
-          vertical-align: -0.15em;
           fill: #4f4e4e;
-          overflow: hidden;
         }
       }
     }
@@ -114,7 +134,7 @@ function CustomTag() {
   const {category: paramsCategory} = useParams();
   const [category, setCategory] = useState(paramsCategory);
   const history = useHistory();
-  const {tags, findTag, updateTags} = useTags();
+  const {tags, findTag, updateTags, createTag} = useTags();
   const [showTagList, setShowTagList] = useState<Tag[]>([]);
   const [unshowTagList, setUnshowTagList] = useState<Tag[]>([]);
   const onChangeCategory = (value: '-' | '+') => {
@@ -128,18 +148,27 @@ function CustomTag() {
   }, [tags, category]);
 
   const toggleShowTags = (tag: Partial<Tag>) => {
-    // 删除标签
-    if (tag.show) {
-      // 删除默认标签
-      if (!tag.custom) {
-        const target = findTag(tag.id!);
-        const index = tags.indexOf(target);
-        const clone = JSON.parse(JSON.stringify(target));
-        clone.show = false;
-        tags.splice(index, 1, clone);
-        updateTags(tags);
-      }
+    const target = findTag(tag.id!);
+    const index = tags.indexOf(target);
+    // 切换默认标签
+    if (!tag.custom) {
+      const clone = JSON.parse(JSON.stringify(target));
+      clone.show = !tag.show;
     }
+    if (tag.custom) {
+      // 删除自定义标签
+      tags.splice(index, 1);
+    }
+    updateTags(tags);
+  };
+
+  const onCreateTag = () => {
+    let tagName = window.prompt('请输入标签名（4个字或8个字母）') as string;
+    if (tagName === null) return;
+    if (tagName === '') return;
+    // eslint-disable-next-line
+    if (tagName.replace(/[^\x00-\xff]/g, 'aa').length > 8) return alert('最多4个字或8个字母');
+    createTag(tagName, category);
   };
 
   return (
@@ -173,12 +202,12 @@ function CustomTag() {
 
         </div>
         <div className="unshowTags">
-          ---
+          <div>更多类别</div>
           <ul>
             {unshowTagList.map(t => {
               return (
                 <li key={t.id}>
-                  <button onClick={() => toggleShowTags(t)}/>
+                  <button onClick={() => toggleShowTags(t)}><Icon name='add'/></button>
                   <div>
                     <div className='iconWrapper'><Icon name={t.name} className='icon'/></div>
                     {t.tagName}
@@ -190,7 +219,7 @@ function CustomTag() {
         </div>
       </div>
       <div className='addTagsButton'>
-        <button><Icon name='add' className='icon'/>添加类型</button>
+        <button onClick={onCreateTag}><Icon name='add' className='icon'/>添加类型</button>
       </div>
     </CustomTagWrapper>
   );

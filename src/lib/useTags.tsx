@@ -1,5 +1,6 @@
 import {defaultTagList, Tag} from './defaultTags';
 import {useEffect, useState} from 'react';
+import {createId} from './createId';
 
 function useTags() {
   const [tags, setTags] = useState<Tag[]>([]);
@@ -28,7 +29,20 @@ function useTags() {
     setTags(temp);
   };
 
-  return {tags, findTag, saveTags, updateTags};
+  const createTag = (tagName: string, category: '-' | '+') => {
+    const newTags = JSON.parse(JSON.stringify(tags));
+    newTags.push({
+      "id": createId(),
+      "name": "custom",
+      "tagName": tagName,
+      "category": category,
+      'show': true,
+      'custom': true
+    });
+    updateTags(newTags);
+  };
+
+  return {tags, findTag, saveTags, updateTags,createTag};
 }
 
 export {useTags};

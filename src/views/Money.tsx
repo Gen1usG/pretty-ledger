@@ -1,5 +1,5 @@
 import {Layout} from '../components/Layout';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Tags} from '../components/Money/Tags';
 import {Numpad} from '../components/Money/Numpad';
 import {Category} from '../components/Money/Category';
@@ -40,9 +40,6 @@ function Money() {
   };
 
 
-  useEffect(() => {
-    console.log(record);
-  }, [record]);
 
 
   return (
