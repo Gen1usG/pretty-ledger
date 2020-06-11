@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Tags} from '../components/Money/Tags';
 import {Numpad} from '../components/Money/Numpad';
 import {Category} from '../components/Money/Category';
-import {Tag} from '../lib/TagList';
+import {Tag} from '../lib/defaultTags';
 import {useRecord} from '../lib/useRecord';
 
 export type Record = {
@@ -18,7 +18,7 @@ function Money() {
   const {createRecord} = useRecord();
   const [category, setCategory] = useState<('-' | '+')>('-');
   const [record, setRecord] = useState<Record>({
-    tag: {id: 0, name: '', tagName: '', category: '-'}, note: '', account: 0, category: category, createAt: ''
+    tag: {id: 0, name: '', tagName: '', category: '-',show:true}, note: '', account: 0, category: category, createAt: ''
   });
 
   const toggleCategory = (itemCategory: ('-' | '+')) => {
@@ -35,7 +35,7 @@ function Money() {
     if (record.account === 0) return alert('请输入金额');
     createRecord(record);
     setRecord({
-      tag: {id: 0, name: '', tagName: '', category: '-'}, note: '', account: 0, category: category, createAt: ''
+      tag: {id: 0, name: '', tagName: '', category: '-',show:true}, note: '', account: 0, category: category, createAt: ''
     })
   };
 

@@ -19,6 +19,7 @@ const CategoryBarWrapper = styled.ul`
 type Props = {
   categoryList: string[]
   category: '-' | '+'
+  changeCategory:(value:'-'|'+')=>void
 } & React.HTMLAttributes<HTMLUListElement>
 
 const categoryHash: { [K: string]: string } = {
@@ -32,7 +33,8 @@ function CategoryBar(props: Props) {
   return (<CategoryBarWrapper {...reset}>
     {props.categoryList.map(categoryItem => {
       return (<li key={categoryItem}
-                  className={props.category === categoryItem ? 'selected' : ''}>
+                  className={props.category === categoryItem ? 'selected' : ''}
+                  onClick={()=>{props.changeCategory(categoryItem as '-' | '+')}}>
         {categoryHash[categoryItem]}</li>);
     })}
   </CategoryBarWrapper>);

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Icon} from '../Icon';
 import styled from 'styled-components';
 import {useTags} from 'lib/useTags';
-import {Tag} from '../../lib/TagList';
+import {Tag} from '../../lib/defaultTags';
 import {Record} from '../../views/Money';
 import {Link} from 'react-router-dom';
 
@@ -51,7 +51,7 @@ type Props = {
 
 function Tags(props: Props) {
   const {getTags} = useTags();
-  const [tagList, setTagList] = useState(getTags().filter(t => t.category === props.category));
+  const [tagList, setTagList] = useState(getTags().filter(t => t.category === props.category).filter(t=>t.show));
   const [selectedTag, setSelectedTag] = useState<number>(props.tag.id);
 
   const refTagWrapper: any = useRef(null);

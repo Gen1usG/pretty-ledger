@@ -1,8 +1,11 @@
-import {TagList} from './TagList';
+import {defaultTagList} from './defaultTags';
 
 function useTags() {
   const getTags = () => {
-    return TagList;
+    return defaultTagList;
+  };
+  const updateTag = () => {
+
   };
   return {getTags};
 }
