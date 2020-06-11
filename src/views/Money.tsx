@@ -7,7 +7,7 @@ import {Tag} from '../lib/defaultTags';
 import {useRecord} from '../lib/useRecord';
 
 export type Record = {
-  tag: Tag
+  tag: Partial<Tag>
   note: string
   account: number
   category: '-' | '+'

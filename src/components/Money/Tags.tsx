@@ -45,14 +45,14 @@ const TagWrapper = styled.div`
 
 type Props = {
   category: ('-' | '+')
-  tag: Tag
+  tag: Partial<Tag>
   onChange: (value: Partial<Record>) => void
 }
 
 function Tags(props: Props) {
-  const {getTags} = useTags();
-  const [tagList, setTagList] = useState(getTags().filter(t => t.category === props.category).filter(t=>t.show));
-  const [selectedTag, setSelectedTag] = useState<number>(props.tag.id);
+  const {tags} = useTags();
+  const [tagList, setTagList] = useState(tags.filter(t => t.category === props.category).filter(t=>t.show));
+  const [selectedTag, setSelectedTag] = useState<number>(props.tag.id!);
 
   const refTagWrapper: any = useRef(null);
 
@@ -61,11 +61,11 @@ function Tags(props: Props) {
   }, []);
 
   useEffect(() => {
-    setTagList(getTags().filter(t => t.category === props.category));
+    setTagList(tags.filter(t => t.category === props.category));
   }, [props.category]);
 
   useEffect(() => {
-    setSelectedTag(props.tag.id);
+    setSelectedTag(props.tag.id!);
   }, [props.tag.id]);
 
 

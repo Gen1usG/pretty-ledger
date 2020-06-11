@@ -22,6 +22,7 @@ type Props = {
   changeCategory:(value:'-'|'+')=>void
 } & React.HTMLAttributes<HTMLUListElement>
 
+
 const categoryHash: { [K: string]: string } = {
   '-': '支出',
   '+': '收入'
@@ -34,7 +35,7 @@ function CategoryBar(props: Props) {
     {props.categoryList.map(categoryItem => {
       return (<li key={categoryItem}
                   className={props.category === categoryItem ? 'selected' : ''}
-                  onClick={()=>{props.changeCategory(categoryItem as '-' | '+')}}>
+                  onClick={()=>{props.changeCategory(categoryItem as any)}}>
         {categoryHash[categoryItem]}</li>);
     })}
   </CategoryBarWrapper>);

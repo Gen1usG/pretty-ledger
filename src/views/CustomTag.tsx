@@ -4,6 +4,7 @@ import {Icon} from '../components/Icon';
 import {CategoryBar} from '../components/CategoryBar';
 import {useParams, useHistory} from "react-router-dom";
 import {useTags} from '../lib/useTags';
+import {Tag} from '../lib/defaultTags';
 
 const CustomTagWrapper = styled.section`
     display: flex;
@@ -46,6 +47,7 @@ const CustomTagWrapper = styled.section`
           button{
             margin:0 8px;
             background-color: red;
+            outline: none;
             border:none;
             width: 20px;
             height: 20px;
@@ -105,7 +107,6 @@ const CustomTagWrapper = styled.section`
           overflow: hidden;
         }
       }
-      
     }
 `;
 
@@ -113,13 +114,22 @@ function CustomTag() {
   const {category: paramsCategory} = useParams();
   const [category, setCategory] = useState(paramsCategory);
   const history = useHistory();
-  const {getTags} = useTags();
-  const defaultTagList = getTags().filter(t => t.category === category);
-  const showTagList = defaultTagList.filter(t => t.show);
+  const {tags, findTag, saveTags} = useTags();
+  const defaultTagList = tags.filter(t => t.category === category);
+  const [showTagList, setShowTagList] = useState(defaultTagList.filter(t => t.show));
   const unshowTagList = defaultTagList.filter(t => !t.show);
 
   const onChangeCategory = (value: '-' | '+') => {
     setCategory(value);
+  };
+  const toggleShowTags = (tag: Partial<Tag>) => {
+    // 删除标签
+    if (tag.show) {
+      // 删除默认标签
+      if (!tag.custom) {
+
+      }
+    }
   };
 
   return (
@@ -132,7 +142,8 @@ function CustomTag() {
           类别设置
           <Icon className='icon'/>
         </div>
-        <CategoryBar categoryList={['-', '+']} className='categoryBar' category={category} changeCategory={onChangeCategory}/>
+        <CategoryBar categoryList={['-', '+']} className='categoryBar' category={category}
+                     changeCategory={onChangeCategory}/>
       </div>
       <div className='tags-stage'>
         <div className="showTags">
@@ -140,7 +151,7 @@ function CustomTag() {
             {showTagList.map(t => {
               return (
                 <li key={t.id}>
-                  <button/>
+                  <button onClick={() => toggleShowTags(t)}/>
                   <div>
                     <div className='iconWrapper'><Icon name={t.name} className='icon'/></div>
                     {t.tagName}
