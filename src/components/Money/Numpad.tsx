@@ -44,6 +44,7 @@ function Numpad(props: Props) {
           备注:
         </div>
         <input id='note' type="text" placeholder='写点什么吧'
+               autoComplete="off"
                defaultValue={props.note}
                onBlur={(e) => {
                  props.onChange({note: e.target.value});

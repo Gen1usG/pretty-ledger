@@ -140,7 +140,7 @@ function CustomTag() {
   const onChangeCategory = (value: '-' | '+') => {
     setCategory(value);
   };
-
+  console.log(tags);
   useEffect(() => {
     const defaultTagList = tags.filter(t => t.category === category);
     setShowTagList(defaultTagList.filter(t => t.show));
@@ -149,14 +149,11 @@ function CustomTag() {
 
   const toggleShowTags = (tag: Partial<Tag>) => {
     const target = findTag(tag.id!);
-    const index = tags.indexOf(target);
-    // 切换默认标签
     if (!tag.custom) {
-      const clone = JSON.parse(JSON.stringify(target));
-      clone.show = !tag.show;
+      target.show = !tag.show;
     }
     if (tag.custom) {
-      // 删除自定义标签
+      const index = tags.indexOf(target);
       tags.splice(index, 1);
     }
     updateTags(tags);
