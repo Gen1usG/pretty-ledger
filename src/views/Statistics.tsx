@@ -70,7 +70,7 @@ const StatisticsWrapper = styled.div`
     }
 `;
 
-const RecordsStage = styled.div` 
+const RecordsStage = styled.ul` 
   .dateNtotal{
     border-bottom: 1px solid rgba(167,167,167,.1);
     .day-income,.day-expenditure,.day-date{
@@ -155,31 +155,26 @@ function Statistics() {
         </div>
 
         <RecordsStage>
-          <div className='dateNtotal'>
-            <div className="day-date">06月09日 星期二</div>
-            <div className="day-total">
-              <div className="day-income">收入：88</div>
-              <div className="day-expenditure">支出：123</div>
-            </div>
-          </div>
-          <ul className='record-list'>
-            <li>
-              <div className="tagNameOrNote">
-                <div className="iconWrapper">
-                  <Icon name='salary' className='list-icon'/>
-                </div>
-                工资
+          <li>
+            <div className='dateNtotal'>
+              <div className="day-date">06月09日 星期二</div>
+              <div className="day-total">
+                <div className="day-income">收入：88</div>
+                <div className="day-expenditure">支出：123</div>
               </div>
-              <div className="account">88</div>
-            </li>
-          </ul>
-          <div className='dateNtotal'>
-            <div className="day-date">06月09日 星期二</div>
-            <div className="day-total">
-              <div className="day-income">收入：88</div>
-              <div className="day-expenditure">支出：123</div>
             </div>
-          </div>
+            <ul className='record-list'>
+              <li>
+                <div className="tagNameOrNote">
+                  <div className="iconWrapper">
+                    <Icon name='salary' className='list-icon'/>
+                  </div>
+                  工资
+                </div>
+                <div className="account">88</div>
+              </li>
+            </ul>
+          </li>
         </RecordsStage>
       </StatisticsWrapper>
     </Layout>
