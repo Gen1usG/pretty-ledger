@@ -23,9 +23,9 @@ const NavWrapper = styled.ul`
           overflow: hidden;
        }
       &.selected{
-        color:#f60;
+        color:#ffda44;
         .icon{
-          fill:#f60;
+          fill:#ffda44;
         }
       }
     }
