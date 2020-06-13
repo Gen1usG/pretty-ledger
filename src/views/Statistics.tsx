@@ -70,6 +70,58 @@ const StatisticsWrapper = styled.div`
     }
 `;
 
+const RecordsStage = styled.div` 
+  .dateNtotal{
+    border-bottom: 1px solid rgba(167,167,167,.1);
+    .day-income,.day-expenditure,.day-date{
+      font-size: 12px;
+      color:#a7a7a7;
+    }
+    display: flex;
+    justify-content: space-between;
+    padding:8px;
+    .day-total{
+      display: flex;
+      > div{
+        margin:0 5px;
+      }
+    }
+  }
+  .record-list{
+    >li{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;  
+      padding:10px;
+    }
+    .account{
+      font-size: 14px;
+    }
+    .tagNameOrNote{
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      .iconWrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffda44;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        margin-right: 12px;
+        .list-icon{
+          width: 24px;
+          height: 24px;
+          vertical-align: -0.15em;
+          fill: #343233;
+          overflow: hidden;
+        }
+      }
+    }   
+  }
+`;
+
 function Statistics() {
 
   return (
@@ -101,7 +153,34 @@ function Statistics() {
             </div>
           </div>
         </div>
-        <div className="record-stage"></div>
+
+        <RecordsStage>
+          <div className='dateNtotal'>
+            <div className="day-date">06月09日 星期二</div>
+            <div className="day-total">
+              <div className="day-income">收入：88</div>
+              <div className="day-expenditure">支出：123</div>
+            </div>
+          </div>
+          <ul className='record-list'>
+            <li>
+              <div className="tagNameOrNote">
+                <div className="iconWrapper">
+                  <Icon name='salary' className='list-icon'/>
+                </div>
+                工资
+              </div>
+              <div className="account">88</div>
+            </li>
+          </ul>
+          <div className='dateNtotal'>
+            <div className="day-date">06月09日 星期二</div>
+            <div className="day-total">
+              <div className="day-income">收入：88</div>
+              <div className="day-expenditure">支出：123</div>
+            </div>
+          </div>
+        </RecordsStage>
       </StatisticsWrapper>
     </Layout>
   );

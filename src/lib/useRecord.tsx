@@ -1,18 +1,18 @@
 import {Record} from '../views/Money';
+import {useState} from 'react';
 
 // [{record1},{record2}]
 function useRecord() {
-  const getRecord = () => {
-    return JSON.parse(window.localStorage.getItem('records') || '[]');
-  };
+  const [records, setRecords] = useState(JSON.parse(window.localStorage.getItem('records') || '[]'));
+
   const createRecord = (newRecord: Record) => {
-    const record = getRecord();
     newRecord.createAt = new Date().toISOString();
-    record.push(newRecord);
-    window.localStorage.setItem('records', JSON.stringify(record));
+    records.push(newRecord);
+    setRecords(records);
+    window.localStorage.setItem('records', JSON.stringify(records));
   };
 
-  return {getRecord, createRecord};
+  return {records, createRecord};
 }
 
 export {useRecord};

@@ -8,6 +8,11 @@ import {CustomTag} from './views/CustomTag';
 
 require('icons/charts.svg');
 
+const data = {
+  "2020":{
+    "01":[]
+  }
+};
 
 function App() {
   return (
