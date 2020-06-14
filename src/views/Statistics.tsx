@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Layout} from '../components/Layout';
 import styled from 'styled-components';
 import {Icon} from '../components/Icon';
+import {useRecord} from '../lib/useRecord';
+import dayjs from 'dayjs';
+import {DatePicker} from '../components/DatePicker';
 
 const StatisticsWrapper = styled.div`
     header{
@@ -123,13 +126,24 @@ const RecordsStage = styled.ul`
 `;
 
 function Statistics() {
+  const {rebuildRecords} = useRecord();
+  const [staRecords, setStaRecords] = useState(rebuildRecords());
+  const [selectedDate, setSelectedDate] = useState<{ year: string, month: string }>({year: '', month: ''});
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const onSelectedDateChange = (newDate: { year: string, month: string }) => {
+    setSelectedDate(newDate);
+    setShowDatePicker(false);
+  };
 
   return (
     <Layout>
       <StatisticsWrapper>
         <header>笨蕉记账</header>
         <div className="wrapper">
-          <div className="timePicker">
+          <div className="timePicker" onClick={() => {
+            setShowDatePicker(true);
+          }}>
             <div className="title">2020</div>
             <div className="month">
               <div className="textWrapper">
@@ -176,6 +190,9 @@ function Statistics() {
             </ul>
           </li>
         </RecordsStage>
+        <DatePicker selectedDate={selectedDate}
+                    onSelectedDateChange={onSelectedDateChange}
+                    showDatePicker={showDatePicker}/>
       </StatisticsWrapper>
     </Layout>
   );

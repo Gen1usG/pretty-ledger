@@ -16,7 +16,7 @@ function CustomTag() {
   const onChangeCategory = (value: '-' | '+') => {
     setCategory(value);
   };
-  console.log(tags);
+
   useEffect(() => {
     const defaultTagList = tags.filter(t => t.category === category);
     setShowTagList(defaultTagList.filter(t => t.show));
