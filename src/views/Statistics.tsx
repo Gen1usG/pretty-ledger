@@ -150,12 +150,12 @@ function Statistics() {
   };
   const countAccount = (tags: any[], category: '-' | '+') => {
     let sum = 0;
-
-    if (tags[0].tag) {
+    if(!tags){return}
+    if (tags[0] && tags[0].tag) {
       tags.filter(t => t.category === category).forEach(i => {
         sum += i.account;
       });
-    } else if (tags[0].records) {
+    } else if (tags[0] && tags[0].records) {
       const tempArr: Record[] = [];
       tags.forEach(item => {
         const categoryArr = item.records.filter((t: Record) => t.category === category);
@@ -208,7 +208,7 @@ function Statistics() {
         </div>
 
         <RecordsStage  ref={refUl}>
-          {staRecords[selectedDate.year][selectedDate.month].map((item: { date: string, records: Record[] }) => {
+          {staRecords && staRecords[selectedDate.year][selectedDate.month].map((item: { date: string, records: Record[] }) => {
             return (
               <li key={item.date}>
                 <div className='dateNtotal'>

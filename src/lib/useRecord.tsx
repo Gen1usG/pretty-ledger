@@ -16,7 +16,8 @@ function useRecord() {
   };
 
   const rebuildRecords = () => {
-    const result: ({ [K: string]: any }) = {};
+    const result: ({ [K: string]: any }) = {[dayjs(new Date()).format('YYYY')]:{[dayjs(new Date()).format('MM')]:[]}};
+
     for (let i = 0; i < records.length; i++) {
       const tempYear = dayjs(records[i].createAt).format('YYYY') as string;
       const tempMonth = dayjs(records[i].createAt).format('MM') as string;
