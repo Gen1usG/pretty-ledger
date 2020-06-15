@@ -129,7 +129,7 @@ const RecordsStage = styled.ul`
 
 function Statistics() {
   const {rebuildRecords} = useRecord();
-  const [staRecords, setStaRecords] = useState(rebuildRecords());
+  const [staRecords] = useState(rebuildRecords());
   const [selectedDate, setSelectedDate] = useState<{ year: string, month: string }>({
     year: dayjs(new Date()).format('YYYY'),
     month: dayjs(new Date()).format('MM')
@@ -210,7 +210,7 @@ function Statistics() {
         <RecordsStage  ref={refUl}>
           {staRecords[selectedDate.year][selectedDate.month].map((item: { date: string, records: Record[] }) => {
             return (
-              <li>
+              <li key={item.date}>
                 <div className='dateNtotal'>
                   <div
                     className="day-date">{dayjs(item.date).format('MM')}月{dayjs(item.date).format('DD')}日 {dayHash[dayjs(item.date).format('d')]}</div>
@@ -222,7 +222,7 @@ function Statistics() {
                 <ul className='record-list'>
                   {item.records.map((listItem: Record) => {
                     return (
-                      <li>
+                      <li key={listItem.createAt}>
                         <div className="tagNameOrNote">
                           <div className="iconWrapper">
                             <Icon name={listItem.tag.name} className='list-icon'/>

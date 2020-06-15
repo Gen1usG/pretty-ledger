@@ -81,13 +81,10 @@ function DatePicker(props: Props) {
   const monthArr = yearArr.map(item => {
     return {year: item, months: Object.keys(records[item])};
   });
-  monthArr[0].months = ['01', '02', '03', '04', '05', '06', '07'];
-
   const selectedDateChange = (yearItem: string, monthItem: string) => {
     props.onSelectedDateChange({year: yearItem, month: monthItem});
     setShow(false);
   };
-  // [{year:2002 , months:[]}]
   return (
     <DatePickerWrapper className={show ? 'show' : 'unShow'}>
       <div className='mask'/>

@@ -2,6 +2,8 @@ import {Record} from '../views/Money';
 import {useState} from 'react';
 import dayjs from 'dayjs';
 
+type rebuildRecord = { date: string, records: Record[] }
+
 // [{record1},{record2}]
 function useRecord() {
   const [records, setRecords] = useState(JSON.parse(window.localStorage.getItem('records') || '[]'));
@@ -26,14 +28,16 @@ function useRecord() {
         if (result[tempYear][tempMonth] === undefined) {
           result[tempYear][tempMonth] = [{date: tempDay, records: [records[i]]}];
         } else if (result[tempYear][tempMonth]) {
-          if(result[tempYear][tempMonth].filter((item:{date:string,records:Record[]})=>item.date===tempDay).length===0){
-            result[tempYear][tempMonth].push({date: tempDay, records: [records[i]]})
-          }else{
-            result[tempYear][tempMonth].filter((item:{date:string,records:Record[]})=>item.date===tempDay)[0].records.push(records[i])
+          if (result[tempYear][tempMonth].filter((item: rebuildRecord) => item.date === tempDay).length === 0) {
+            result[tempYear][tempMonth].push({date: tempDay, records: [records[i]]});
+          } else {
+            result[tempYear][tempMonth].filter((item: rebuildRecord) => item.date === tempDay)[0].records.push(records[i]);
           }
-
         }
       }
+      result[tempYear][tempMonth].sort((a: rebuildRecord, b: rebuildRecord) => {
+        return -(parseFloat(dayjs(a.date).format('DD')) - parseFloat(dayjs(b.date).format('DD')));
+      });
     }
     return result;
   };
