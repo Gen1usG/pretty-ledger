@@ -18,18 +18,24 @@ function useRecord() {
     for (let i = 0; i < records.length; i++) {
       const tempYear = dayjs(records[i].createAt).format('YYYY') as string;
       const tempMonth = dayjs(records[i].createAt).format('MM') as string;
+      const tempDay = dayjs(records[i].createAt).format('YYYY-MM-DD') as string;
       if (result[tempYear] === undefined) {
         result[tempYear] = {};
-        result[tempYear][tempMonth] = [records[i]];
-      }else if(result[tempYear]){
-        if(result[tempYear][tempMonth]===undefined){
-          result[tempYear][tempMonth] = [records[i]]
-        }else{
-          result[tempYear][tempMonth].push(records[i])
+        result[tempYear][tempMonth] = [{date: tempDay, records: [records[i]]}];
+      } else if (result[tempYear]) {
+        if (result[tempYear][tempMonth] === undefined) {
+          result[tempYear][tempMonth] = [{date: tempDay, records: [records[i]]}];
+        } else if (result[tempYear][tempMonth]) {
+          if(result[tempYear][tempMonth].filter((item:{date:string,records:Record[]})=>item.date===tempDay).length===0){
+            result[tempYear][tempMonth].push({date: tempDay, records: [records[i]]})
+          }else{
+            result[tempYear][tempMonth].filter((item:{date:string,records:Record[]})=>item.date===tempDay)[0].records.push(records[i])
+          }
+
         }
       }
     }
-    return result
+    return result;
   };
 
   return {records, createRecord, rebuildRecords};

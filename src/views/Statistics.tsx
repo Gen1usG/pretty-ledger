@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Layout} from '../components/Layout';
 import styled from 'styled-components';
 import {Icon} from '../components/Icon';
 import {useRecord} from '../lib/useRecord';
 import dayjs from 'dayjs';
 import {DatePicker} from '../components/DatePicker';
+import {Record} from './Money';
 
 const StatisticsWrapper = styled.div`
     header{
@@ -74,6 +75,7 @@ const StatisticsWrapper = styled.div`
 `;
 
 const RecordsStage = styled.ul` 
+  overflow: scroll;
   .dateNtotal{
     border-bottom: 1px solid rgba(167,167,167,.1);
     .day-income,.day-expenditure,.day-date{
@@ -114,8 +116,8 @@ const RecordsStage = styled.ul`
         height: 28px;
         margin-right: 12px;
         .list-icon{
-          width: 24px;
-          height: 24px;
+          width: 22px;
+          height: 22px;
           vertical-align: -0.15em;
           fill: #343233;
           overflow: hidden;
@@ -128,13 +130,50 @@ const RecordsStage = styled.ul`
 function Statistics() {
   const {rebuildRecords} = useRecord();
   const [staRecords, setStaRecords] = useState(rebuildRecords());
-  const [selectedDate, setSelectedDate] = useState<{ year: string, month: string }>({year: '', month: ''});
+  const [selectedDate, setSelectedDate] = useState<{ year: string, month: string }>({
+    year: dayjs(new Date()).format('YYYY'),
+    month: dayjs(new Date()).format('MM')
+  });
   const [showDatePicker, setShowDatePicker] = useState(false);
-
   const onSelectedDateChange = (newDate: { year: string, month: string }) => {
     setSelectedDate(newDate);
     setShowDatePicker(false);
   };
+  const dayHash: { [K: string]: string } = {
+    '0': '星期天',
+    '1': '星期一',
+    '2': '星期二',
+    '3': '星期三',
+    '4': '星期四',
+    '5': '星期五',
+    '6': '星期六',
+  };
+  const countAccount = (tags: any[], category: '-' | '+') => {
+    let sum = 0;
+
+    if (tags[0].tag) {
+      tags.filter(t => t.category === category).forEach(i => {
+        sum += i.account;
+      });
+    } else if (tags[0].records) {
+      const tempArr: Record[] = [];
+      tags.forEach(item => {
+        const categoryArr = item.records.filter((t: Record) => t.category === category);
+        categoryArr.forEach((r: Record) => {
+          tempArr.length===0?tempArr[0]=r:tempArr.splice(tempArr.length - 1, 0, r);
+        });
+      });
+
+      tempArr.forEach(i => {
+        sum += i.account;
+      });
+    }
+    return sum.toFixed(2);
+  };
+  const refUl = useRef<any>(null);
+  useEffect(() => {
+    refUl.current.style.height = (window.screen.height - 38 - 60 - 57) + 'px';
+  }, []);
 
   return (
     <Layout>
@@ -144,10 +183,10 @@ function Statistics() {
           <div className="timePicker" onClick={() => {
             setShowDatePicker(true);
           }}>
-            <div className="title">2020</div>
+            <div className="title">{selectedDate.year}</div>
             <div className="month">
               <div className="textWrapper">
-                <div>06</div>
+                <div>{selectedDate.month}</div>
                 <div>月 <Icon className='icon' name='down'/></div>
               </div>
             </div>
@@ -156,39 +195,49 @@ function Statistics() {
             <div className="income">
               <div className="title">收入</div>
               <div className="textWrapper">
-                <div className="total">88.00</div>
+                <div className="total">{countAccount(staRecords[selectedDate.year][selectedDate.month], '+')}</div>
               </div>
             </div>
             <div className="expenditure">
               <div className="title">支出</div>
               <div className="textWrapper">
-                <div className="total">123.00</div>
+                <div className="total">{countAccount(staRecords[selectedDate.year][selectedDate.month], '-')}</div>
               </div>
             </div>
           </div>
         </div>
 
-        <RecordsStage>
-          <li>
-            <div className='dateNtotal'>
-              <div className="day-date">06月09日 星期二</div>
-              <div className="day-total">
-                <div className="day-income">收入：88</div>
-                <div className="day-expenditure">支出：123</div>
-              </div>
-            </div>
-            <ul className='record-list'>
+        <RecordsStage  ref={refUl}>
+          {staRecords[selectedDate.year][selectedDate.month].map((item: { date: string, records: Record[] }) => {
+            return (
               <li>
-                <div className="tagNameOrNote">
-                  <div className="iconWrapper">
-                    <Icon name='salary' className='list-icon'/>
+                <div className='dateNtotal'>
+                  <div
+                    className="day-date">{dayjs(item.date).format('MM')}月{dayjs(item.date).format('DD')}日 {dayHash[dayjs(item.date).format('d')]}</div>
+                  <div className="day-total">
+                    <div className="day-income">收入：{countAccount(item.records, '+')}</div>
+                    <div className="day-expenditure">支出：{countAccount(item.records, '-')}</div>
                   </div>
-                  工资
                 </div>
-                <div className="account">88</div>
+                <ul className='record-list'>
+                  {item.records.map((listItem: Record) => {
+                    return (
+                      <li>
+                        <div className="tagNameOrNote">
+                          <div className="iconWrapper">
+                            <Icon name={listItem.tag.name} className='list-icon'/>
+                          </div>
+                          {listItem.note === '' ? listItem.tag.tagName : listItem.note}
+                        </div>
+                        <div className="account">{listItem.category === '+' ? '' : '-'}{listItem.account}</div>
+                      </li>
+                    );
+                  })}
+                </ul>
               </li>
-            </ul>
-          </li>
+            );
+          })}
+
         </RecordsStage>
         <DatePicker selectedDate={selectedDate}
                     onSelectedDateChange={onSelectedDateChange}

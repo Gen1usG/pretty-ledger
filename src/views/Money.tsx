@@ -39,9 +39,6 @@ function Money() {
     })
   };
 
-
-
-
   return (
     <Layout>
       <Category category={category} toggleCategory={toggleCategory}/>
