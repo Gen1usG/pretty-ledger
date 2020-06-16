@@ -18,24 +18,34 @@ const CategoryBarWrapper = styled.ul`
 
 type Props = {
   categoryList: string[]
-  category: '-' | '+'
-  changeCategory:(value:'-'|'+')=>void
+  category: '-' | '+'|'week'|'month'|'year'
+  changeCategory?:(value:'-'|'+')=>void
+  changeTimeRange?:(value:'week'|'month'|'year')=>void
 } & React.HTMLAttributes<HTMLUListElement>
 
 
 const categoryHash: { [K: string]: string } = {
   '-': '支出',
-  '+': '收入'
+  '+': '收入',
+  'week':'周',
+  'month':'月',
+  'year':'年',
 };
 
 function CategoryBar(props: Props) {
   const {children, categoryList, ...reset} = props;
-
-  return (<CategoryBarWrapper {...reset}>
+  const onChangeCategory = (categoryItem:'-' | '+'|'week'|'month'|'year')=>{
+      if(props.changeCategory){
+        props.changeCategory(categoryItem as '-'|'+')
+      }else if(props.changeTimeRange){
+        props.changeTimeRange(categoryItem as 'week'|'month'|'year')
+      }
+  }
+    return (<CategoryBarWrapper {...reset}>
     {props.categoryList.map(categoryItem => {
       return (<li key={categoryItem}
                   className={props.category === categoryItem ? 'selected' : ''}
-                  onClick={()=>{props.changeCategory(categoryItem as any)}}>
+                  onClick={()=>{onChangeCategory(categoryItem as '-' | '+'|'week'|'month'|'year')}}>
         {categoryHash[categoryItem]}</li>);
     })}
   </CategoryBarWrapper>);
