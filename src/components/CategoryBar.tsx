@@ -48,8 +48,6 @@ function CategoryBar(props: Props) {
   };
   return (<CategoryBarWrapper {...reset}>
     {props.categoryList.map(categoryItem => {
-      console.log(props.category);
-      console.log(categoryItem);
       return (<li key={categoryItem}
                   className={props.category === categoryItem ? 'selected' : ''}
                   onClick={() => {

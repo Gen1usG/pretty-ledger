@@ -1,9 +1,10 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Layout} from '../components/Layout';
 import styled from 'styled-components';
 import {CategoryBar} from '../components/CategoryBar';
 import {Icon} from '../components/Icon';
 import classNames from 'classnames';
+import echarts from 'echarts';
 
 const ChartsWrapper = styled.div`
     %iconComment{
@@ -71,15 +72,38 @@ const ChartsWrapper = styled.div`
         }
       }
    }
+   #main-charts{
+      width: 100%;
+      height:200px;
+   }
 `;
 
 function Charts() {
   const [category, setCategory] = useState<'-' | '+'>('-');
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
-  const incomeAndExpenditure = [
-    {category: '-', name: '支出', iconName: 'expenditure'},
-    {category: '+', name: '收入', iconName: 'income'}];
+  const [chartsOption, setChartsOption] = useState<object>({
+    title: {
+      text: 'ECharts 入门示例'
+    },
+    tooltip: {},
+    legend: {
+      data: ['销量']
+    },
+    xAxis: {
+      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+    },
+    yAxis: {},
+    series: [{
+      name: '销量',
+      type: 'bar',
+      data: [5, 20, 36, 10, 10, 20]
+    }]
+  });
   const refCategorySelectorWrapper = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const myChart = echarts.init(document.getElementById('main-charts') as HTMLDivElement);
+    myChart.setOption(chartsOption);
+  }, [chartsOption]);
   const showSelector = () => {
     refCategorySelectorWrapper.current!.style.display = 'block';
   };
@@ -90,6 +114,10 @@ function Charts() {
   const changeTimeRange = (timeRange: 'week' | 'month' | 'year') => {
     setTimeRange(timeRange);
   };
+  const incomeAndExpenditure = [
+    {category: '-', name: '支出', iconName: 'expenditure'},
+    {category: '+', name: '收入', iconName: 'income'}];
+
   return (
     <Layout>
       <ChartsWrapper>
@@ -117,8 +145,7 @@ function Charts() {
             }</ul>
           </div>
         </div>
-        <div className="main-charts">
-        </div>
+        <div id='main-charts'/>
         <div className="rank"></div>
       </ChartsWrapper>
     </Layout>
