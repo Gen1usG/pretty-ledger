@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {Layout} from '../components/Layout';
 import styled from 'styled-components';
 import {CategoryBar} from '../components/CategoryBar';
 import {Icon} from '../components/Icon';
+import classNames from 'classnames';
 
 const ChartsWrapper = styled.div`
     %iconComment{
@@ -30,6 +31,7 @@ const ChartsWrapper = styled.div`
         margin:5px 0 10px 0;
       }
       .category-selector-wrapper{
+        display: none;
         width: 100%;       
         height:100%;
         background-color: rgba(0,0,0,.5);
@@ -46,12 +48,15 @@ const ChartsWrapper = styled.div`
               margin:0 8px;
             }
             .right-icon{
-              display: block;
+              display: none;
               @extend %iconCommon;
               width: 20px;
               height: 20px;
               color: #334444;
               margin-right: 15px;
+            }
+            .show-right-icon{
+              display: block;
             }
             display: flex;
             align-items: center;
@@ -69,27 +74,45 @@ const ChartsWrapper = styled.div`
 `;
 
 function Charts() {
+  const [category, setCategory] = useState<'-' | '+'>('-');
+  const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
   const incomeAndExpenditure = [
     {category: '-', name: '支出', iconName: 'expenditure'},
     {category: '+', name: '收入', iconName: 'income'}];
+  const refCategorySelectorWrapper = useRef<HTMLDivElement>(null);
+  const showSelector = () => {
+    refCategorySelectorWrapper.current!.style.display = 'block';
+  };
+  const toggleCategory = (category: '-' | '+') => {
+    setCategory(category);
+    refCategorySelectorWrapper.current!.style.display = 'none';
+  };
+  const changeTimeRange = (timeRange: 'week' | 'month' | 'year') => {
+    setTimeRange(timeRange);
+  };
   return (
     <Layout>
       <ChartsWrapper>
         <div className="top-bar">
-          <div className="category">支出 <Icon name='down'/></div>
-          <CategoryBar categoryList={['week', 'month', 'year']} category='week' className={'categoryBar'}/>
-          <div className="category-selector-wrapper">
+          <div className="category" onClick={showSelector}>{category === '-' ? "支出" : "收入"} <Icon name='down'/></div>
+          <CategoryBar categoryList={['week', 'month', 'year']}
+                       category={timeRange} className={'categoryBar'}
+                       changeTimeRange={changeTimeRange}/>
+          <div className="category-selector-wrapper" ref={refCategorySelectorWrapper}>
             <ul className="category-selector">{
-              incomeAndExpenditure.map(c=>{
+              incomeAndExpenditure.map((c) => {
                 return (
-                  <li>
+                  <li key={c.name} onClick={() => {
+                    toggleCategory(c.category as '-' | '+');
+                  }}>
                     <Icon name={c.iconName} className='left-icon'/>
                     <div>
                       <div>{c.name}</div>
-                      <Icon name='tick' className='right-icon'/>
+                      <Icon name='tick'
+                            className={classNames('right-icon', category === c.category ? 'show-right-icon' : '')}/>
                     </div>
                   </li>
-                )
+                );
               })
             }</ul>
           </div>
