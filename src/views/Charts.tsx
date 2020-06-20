@@ -72,16 +72,43 @@ const ChartsWrapper = styled.div`
         }
       }
    }
-   #main-charts{
-      width: 100%;
-      height:200px;
+   .charts-wrapper{
+      #main-charts{
+        margin:0;
+        width: 100%;
+        height:180px;
+      }
+      .charts-time{
+        border-bottom:1px solid rgba(0,0,0,.2);
+        padding:8px;
+        > span{
+          font-size: 14px;
+        }
+      }
    }
+   
 `;
 
 function Charts() {
   const [category, setCategory] = useState<'-' | '+'>('-');
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
   const [chartsOption, setChartsOption] = useState<object>({
+    title: {
+      text:'总支出：',
+      textStyle:{
+        color:'#aaa',
+        fontWeight:'normal',
+        fontSize:12,
+      },
+      subtext: '平均值：',
+      subtextStyle:{
+        fontSize:10,
+      }
+    },
+    grid: {
+      top:'20%',
+      bottom: '20%'
+    },
     xAxis: {
       type: 'category',
       boundaryGap: false,
@@ -91,7 +118,6 @@ function Charts() {
     yAxis: {
       axisLabel:{
         show:false,
-        margin:0,
       },
       splitLine:{show:false},
       axisLine:{show:false},
@@ -103,13 +129,22 @@ function Charts() {
       symbolSize:6,
       itemStyle:{
         borderColor:'#334444',
-        color:'#ffda44'
+        color:(params:{value:number})=>params.value===0?'#fff':'#ffda44',
       },
       lineStyle:{
         width:1,
         color:'#334444',
       },
-      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      markLine: {
+        symbol:'none',
+        label:{show:false},
+        lineStyle:{color:'rgba(51,68,68,.3)'},
+        data: [
+          {type: 'average', name: '平均值'},{type: 'max',name:'最大值',lineStyle:{type:'solid'}}
+        ]
+
+      },
+      data: [820, 932, 901, 934, 1290, 0, 1320],
       type: 'line'
     }]
   });
@@ -128,9 +163,17 @@ function Charts() {
   const changeTimeRange = (timeRange: 'week' | 'month' | 'year') => {
     setTimeRange(timeRange);
   };
+  const timeRangeText = (timeRange:'week'|'month'|'year')=>{
+      return {
+        'week':'近七天',
+        'month':'本月',
+        'year':'今年',
+      }[timeRange]
+  };
   const incomeAndExpenditure = [
     {category: '-', name: '支出', iconName: 'expenditure'},
     {category: '+', name: '收入', iconName: 'income'}];
+
 
   return (
     <Layout>
@@ -159,7 +202,11 @@ function Charts() {
             }</ul>
           </div>
         </div>
-        <div id='main-charts'/>
+        <div className="charts-wrapper">
+          <div className="charts-time"><span>{timeRangeText(timeRange)}</span></div>
+          <div id='main-charts'/>
+        </div>
+
         <div className="rank"> </div>
       </ChartsWrapper>
     </Layout>
