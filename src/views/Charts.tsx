@@ -9,7 +9,7 @@ import echarts from 'echarts';
 const ChartsWrapper = styled.div`
     %iconComment{
       vertical-align: -0.15em;
-      overflow: hidden;
+      overflow: hidden;yarn
    }
    .icon{
       width: 14px;
@@ -82,21 +82,35 @@ function Charts() {
   const [category, setCategory] = useState<'-' | '+'>('-');
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
   const [chartsOption, setChartsOption] = useState<object>({
-    title: {
-      text: 'ECharts 入门示例'
-    },
-    tooltip: {},
-    legend: {
-      data: ['销量']
-    },
     xAxis: {
-      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+      type: 'category',
+      boundaryGap: false,
+      axisTick:{show:false},
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     },
-    yAxis: {},
+    yAxis: {
+      axisLabel:{
+        show:false,
+        margin:0,
+      },
+      splitLine:{show:false},
+      axisLine:{show:false},
+      axisTick:{show:false},
+      type: 'value',
+    },
     series: [{
-      name: '销量',
-      type: 'bar',
-      data: [5, 20, 36, 10, 10, 20]
+      symbol:'circle',
+      symbolSize:6,
+      itemStyle:{
+        borderColor:'#334444',
+        color:'#ffda44'
+      },
+      lineStyle:{
+        width:1,
+        color:'#334444',
+      },
+      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      type: 'line'
     }]
   });
   const refCategorySelectorWrapper = useRef<HTMLDivElement>(null);
@@ -146,7 +160,7 @@ function Charts() {
           </div>
         </div>
         <div id='main-charts'/>
-        <div className="rank"></div>
+        <div className="rank"> </div>
       </ChartsWrapper>
     </Layout>
   );
