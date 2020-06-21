@@ -64,7 +64,7 @@ type Props = {
 
 function DatePicker(props: Props) {
   const {rebuildRecords} = useRecord();
-  const [records] = useState(rebuildRecords());
+  const [records] = useState(rebuildRecords);
   const [show, setShow] = useState(props.showDatePicker);
   useEffect(() => {
     setShow(props.showDatePicker);

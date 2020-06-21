@@ -129,7 +129,7 @@ const RecordsStage = styled.ul`
 
 function Statistics() {
   const {rebuildRecords} = useRecord();
-  const [staRecords] = useState(rebuildRecords());
+  const [staRecords] = useState(rebuildRecords);
   const [selectedDate, setSelectedDate] = useState<{ year: string, month: string }>({
     year: dayjs(new Date()).format('YYYY'),
     month: dayjs(new Date()).format('MM')
