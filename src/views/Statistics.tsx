@@ -6,6 +6,7 @@ import {useRecord} from '../lib/useRecord';
 import dayjs from 'dayjs';
 import {DatePicker} from '../components/DatePicker';
 import {Record} from './Money';
+import {BeautyIcon} from '../components/BeautyIcon';
 
 const StatisticsWrapper = styled.div`
     header{
@@ -106,22 +107,8 @@ const RecordsStage = styled.ul`
       display: flex;
       align-items: center;
       font-size: 14px;
-      .iconWrapper{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #ffda44;
-        border-radius: 50%;
-        width: 28px;
-        height: 28px;
+      .beautyIcon{
         margin-right: 12px;
-        .list-icon{
-          width: 22px;
-          height: 22px;
-          vertical-align: -0.15em;
-          fill: #343233;
-          overflow: hidden;
-        }
       }
     }   
   }
@@ -224,9 +211,10 @@ function Statistics() {
                     return (
                       <li key={listItem.createAt}>
                         <div className="tagNameOrNote">
-                          <div className="iconWrapper">
-                            <Icon name={listItem.tag.name} className='list-icon'/>
-                          </div>
+                          <BeautyIcon name={listItem.tag.name!} className='beautyIcon'/>
+                          {/*<div className="iconWrapper">*/}
+                          {/*  <Icon name={listItem.tag.name} className='list-icon'/>*/}
+                          {/*</div>*/}
                           {listItem.note === '' ? listItem.tag.tagName : listItem.note}
                         </div>
                         <div className="account">{listItem.category === '+' ? '' : '-'}{listItem.account}</div>
