@@ -9,12 +9,14 @@ import {Record} from './Money';
 import {BeautyIcon} from '../components/BeautyIcon';
 import {ChartsWrapper} from '../components/styledComponent/ChartsWrapper';
 import {RankBar} from '../components/RankBar';
+import {NoData} from '../components/NoData';
 
 function Charts() {
   const [category, setCategory] = useState<'-' | '+'>('-');
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
   const {chartsDataObj} = useRecord(timeRange, category);
   const [dataObj, setDataObj] = useState(chartsDataObj);
+  console.log(dataObj);
   useEffect(() => {
     setDataObj(chartsDataObj);
   }, [timeRange, category, chartsDataObj]);
@@ -162,9 +164,19 @@ function Charts() {
     return resultArr;
   }, [dataObj]);
   const rankRef = useRef<HTMLUListElement>(null);
-  useEffect(()=>{
+  useEffect(() => {
     rankRef.current!.style.height = (document.body.clientHeight - 388) + 'px';
-  },[]);
+  }, []);
+
+  const showNoData = () => {
+    if (!dataObj) return true;
+    let show = true;
+    dataObj.dateData.forEach(item=>{
+      if(item.length!==0) show = false;
+    });
+    return show
+  };
+
   return (
     <Layout>
       <ChartsWrapper>
@@ -200,6 +212,7 @@ function Charts() {
         <div className="rank">
           <div className="rankCategory"><span>{rankCategoryText(category)}</span></div>
           <ul className='rankList' ref={rankRef}>
+            <NoData show={showNoData()}/>
             {rankData.map((d: { tag: string, total: number, tagName: string }) => {
               return (
                 <li key={d.tagName}>
@@ -210,7 +223,7 @@ function Charts() {
                         <span>{((d.total / chartsSeriesData.total) * 100).toFixed(1) + '%'}</span></div>
                       <div className="rank-right">{d.total.toFixed(2)}</div>
                     </div>
-                    <RankBar barWidth={(d.total/rankData[0].total)*100}/>
+                    <RankBar barWidth={(d.total / rankData[0].total) * 100}/>
                   </div>
                 </li>
               );
@@ -221,4 +234,5 @@ function Charts() {
     </Layout>
   );
 }
+
 export {Charts};

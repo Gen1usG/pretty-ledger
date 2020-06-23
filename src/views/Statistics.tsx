@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import {DatePicker} from '../components/DatePicker';
 import {Record} from './Money';
 import {BeautyIcon} from '../components/BeautyIcon';
+import {NoData} from '../components/NoData';
 
 const StatisticsWrapper = styled.div`
     header{
@@ -159,7 +160,7 @@ function Statistics() {
   };
   const refUl = useRef<any>(null);
   useEffect(() => {
-    refUl.current.style.height = (window.screen.height - 38 - 60 - 57) + 'px';
+    refUl.current.style.height = (document.body.clientHeight - 38 - 60 - 57) + 'px';
   }, []);
 
   return (
@@ -195,6 +196,7 @@ function Statistics() {
         </div>
 
         <RecordsStage  ref={refUl}>
+          <NoData show={staRecords[selectedDate.year][selectedDate.month].length === 0}/>
           {staRecords && staRecords[selectedDate.year][selectedDate.month].map((item: { date: string, records: Record[] }) => {
             return (
               <li key={item.date}>
@@ -212,9 +214,6 @@ function Statistics() {
                       <li key={listItem.createAt}>
                         <div className="tagNameOrNote">
                           <BeautyIcon name={listItem.tag.name!} className='beautyIcon'/>
-                          {/*<div className="iconWrapper">*/}
-                          {/*  <Icon name={listItem.tag.name} className='list-icon'/>*/}
-                          {/*</div>*/}
                           {listItem.note === '' ? listItem.tag.tagName : listItem.note}
                         </div>
                         <div className="account">{listItem.category === '+' ? '' : '-'}{listItem.account}</div>
