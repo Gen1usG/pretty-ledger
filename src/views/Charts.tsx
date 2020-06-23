@@ -16,7 +16,6 @@ function Charts() {
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
   const {chartsDataObj} = useRecord(timeRange, category);
   const [dataObj, setDataObj] = useState(chartsDataObj);
-  console.log(dataObj);
   useEffect(() => {
     setDataObj(chartsDataObj);
   }, [timeRange, category, chartsDataObj]);
