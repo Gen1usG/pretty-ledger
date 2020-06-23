@@ -1,110 +1,49 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Layout} from '../components/Layout';
-import styled from 'styled-components';
 import {CategoryBar} from '../components/CategoryBar';
 import {Icon} from '../components/Icon';
 import classNames from 'classnames';
 import echarts from 'echarts';
 import {useRecord} from '../lib/useRecord';
 import {Record} from './Money';
-
-const ChartsWrapper = styled.div`
-    %iconComment{
-      vertical-align: -0.15em;
-      overflow: hidden;
-   }
-   .icon{
-      width: 14px;
-      height: 14px;
-      vertical-align: 0;
-      fill: #000;
-      overflow: hidden;
-   }
-   .top-bar{
-      background-color: #ffda44;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      .category{
-        padding:5px 0;
-        font-size: 18px;
-      }
-      .categoryBar{
-        width: 90%;
-        margin:5px 0 10px 0;
-      }
-      .category-selector-wrapper{
-        display: none;
-        width: 100%;       
-        height:100%;
-        background-color: rgba(0,0,0,.5);
-        position: fixed;
-        top:74px;
-        z-index: 100;
-        .category-selector{
-          background-color: #fff;
-          > li{
-            .left-icon{
-              @extend %iconCommon;
-              width: 20px;
-              height: 20px;
-              fill: #ffda44;
-              margin:0 8px;
-            }
-            .right-icon{
-              display: none;
-              @extend %iconCommon;
-              width: 20px;
-              height: 20px;
-              color: #334444;
-              margin-right: 15px;
-            }
-            .show-right-icon{
-              display: block;
-            }
-            display: flex;
-            align-items: center;
-            > div{
-              flex-grow: 1;
-              display: flex;
-              justify-content: space-between;
-              padding: 10px 0 ;
-              border-bottom: 1px solid rgba(0,0,0,.2);
-            }
-          }
-        }
-      }
-   }
-   .charts-wrapper{
-      #main-charts{
-        margin:0;
-        width: 100%;
-        height:180px;
-      }
-      .charts-time{
-        border-bottom:1px solid rgba(0,0,0,.2);
-        padding:8px;
-        > span{
-          font-size: 14px;
-        }
-      }
-   }
-   
-`;
+import {BeautyIcon} from '../components/BeautyIcon';
+import {ChartsWrapper} from '../components/styledComponent/ChartsWrapper';
+import {RankBar} from '../components/RankBar';
 
 function Charts() {
-  const {chartsData} = useRecord();
   const [category, setCategory] = useState<'-' | '+'>('-');
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
+  const {chartsDataObj} = useRecord(timeRange, category);
+  const [dataObj, setDataObj] = useState(chartsDataObj);
+  useEffect(() => {
+    setDataObj(chartsDataObj);
+  }, [timeRange, category, chartsDataObj]);
+  const chartsSeriesData = useMemo(() => {
+    const dataAccount: number[] = [];
+    let total: number = 0;
+    if (dataObj) {
+      dataObj.dateData.forEach((dataList: Record[]) => {
+        dataAccount.push(dataList.reduce((sum: number, current: Record) => {
+          total += current.account;
+          return total;
+        }, 0));
+      });
+    }
+
+    const totalText = category === '-' ? `总支出：${total.toFixed(2)}` : `总收入：${total.toFixed(2)}`;
+    const average = (total / dataObj!.date.length).toFixed(2);
+    return {dataAccount, total, totalText, average};
+  }, [dataObj, category]);
+
   const [chartsOption, setChartsOption] = useState<object>({
     title: {
-      text: '总支出：',
+      text: chartsSeriesData.totalText,
       textStyle: {
         color: '#aaa',
         fontWeight: 'normal',
         fontSize: 12,
       },
-      subtext: '平均值：',
+      subtext: `平均值：${chartsSeriesData.average}`,
       subtextStyle: {
         fontSize: 10,
       }
@@ -117,7 +56,7 @@ function Charts() {
       type: 'category',
       boundaryGap: false,
       axisTick: {show: false},
-      data: [0]
+      data: dataObj!.date
     },
     yAxis: {
       axisLabel: {
@@ -143,35 +82,30 @@ function Charts() {
         symbol: 'none',
         label: {show: false},
         lineStyle: {color: 'rgba(51,68,68,.3)'},
-        silent:true,
+        silent: true,
         data: [
           {type: 'average', name: '平均值'}, {type: 'max', name: '最大值', lineStyle: {type: 'solid'}}
         ]
 
       },
-      data: [0],
+      data: chartsSeriesData.dataAccount,
       type: 'line'
     }]
   });
   useEffect(() => {
-    const dataObj = chartsData(timeRange, category);
-    const dataAccount: number[] = [];
-    if (dataObj) {
-      dataObj.dateData.forEach((dataList: Record[]) => {
-        dataAccount.push(dataList.reduce((sum: number, current: Record) => {
-          return sum += current.account;
-        }, 0));
-      });
-    }
     setChartsOption({
-      xAxis:{
-        data:dataObj!.date
+      title: {
+        text: chartsSeriesData.totalText,
+        subtext: `平均值：${chartsSeriesData.average}`,
       },
-      series:[{
-        data:dataAccount
+      xAxis: {
+        data: dataObj!.date
+      },
+      series: [{
+        data: chartsSeriesData.dataAccount
       }]
-    })
-  }, [category, timeRange]);
+    });
+  }, [dataObj, chartsSeriesData.totalText, chartsSeriesData.dataAccount, chartsSeriesData.average]);
   const refCategorySelectorWrapper = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const myChart = echarts.init(document.getElementById('main-charts') as HTMLDivElement);
@@ -194,10 +128,43 @@ function Charts() {
       'year': '今年',
     }[timeRange];
   };
+  const rankCategoryText = (category: '-' | '+') => {
+    return category === '-' ? '支出排行榜' : '收入排行榜';
+  };
   const incomeAndExpenditure = [
     {category: '-', name: '支出', iconName: 'expenditure'},
     {category: '+', name: '收入', iconName: 'income'}];
 
+  const rankData = useMemo(() => {
+    const data = dataObj;
+    const categoryObj: { [K: string]: { tag: string, total: number, tagName: string } } = {};
+    const resultArr = [];
+    if (data) {
+      for (let i = 0; i < data.dateData.length; i++) {
+        data.dateData[i].forEach((r: Record) => {
+          if (!categoryObj[r.tag.tagName!]) {
+            categoryObj[r.tag.tagName!] = {tag: '', total: 0, tagName: ''};
+            categoryObj[r.tag.tagName!].tag = r.tag.name as string;
+            categoryObj[r.tag.tagName!].total = r.account;
+            categoryObj[r.tag.tagName!].tagName = r.tag.tagName as string;
+          } else {
+            categoryObj[r.tag.tagName!].total += r.account;
+          }
+        });
+      }
+    }
+    for (let key in categoryObj) {
+      resultArr.push(categoryObj[key]);
+    }
+    resultArr.sort((a, b) => {
+      return b.total - a.total;
+    });
+    return resultArr;
+  }, [dataObj]);
+  const rankRef = useRef<HTMLUListElement>(null);
+  useEffect(()=>{
+    rankRef.current!.style.height = (document.body.clientHeight - 388) + 'px';
+  },[]);
   return (
     <Layout>
       <ChartsWrapper>
@@ -230,10 +197,28 @@ function Charts() {
           <div id='main-charts'/>
         </div>
 
-        <div className="rank"></div>
+        <div className="rank">
+          <div className="rankCategory"><span>{rankCategoryText(category)}</span></div>
+          <ul className='rankList' ref={rankRef}>
+            {rankData.map((d: { tag: string, total: number, tagName: string }) => {
+              return (
+                <li key={d.tagName}>
+                  <BeautyIcon name={d.tag} className='beautyIcon'/>
+                  <div className="rank-description-wrapper">
+                    <div className="rank-title">
+                      <div className="rank-left"><span>{d.tagName}</span>
+                        <span>{((d.total / chartsSeriesData.total) * 100).toFixed(1) + '%'}</span></div>
+                      <div className="rank-right">{d.total.toFixed(2)}</div>
+                    </div>
+                    <RankBar barWidth={(d.total/rankData[0].total)*100}/>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </ChartsWrapper>
     </Layout>
   );
 }
-
 export {Charts};

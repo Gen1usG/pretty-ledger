@@ -1,11 +1,11 @@
 import {Record} from '../views/Money';
-import {useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import dayjs from 'dayjs';
 
 type rebuildRecord = { date: string, records: Record[] }
 
 // [{record1},{record2}]
-function useRecord() {
+function useRecord(timeRanges?: 'week' | 'month' | 'year', category?: '-' | '+') {
   const [records, setRecords] = useState(JSON.parse(window.localStorage.getItem('records') || '[]'));
   const createRecord = (newRecord: Record) => {
     newRecord.createAt = new Date().toISOString();
@@ -72,7 +72,7 @@ function useRecord() {
       return {'date': eachDayInMonth, 'dateData': eachDayData};
     }
     if (timeRange === 'year') {
-      const year = ['1月', '2月', '3月','4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+      const year = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
       const yearData = [];
       for (let i = 1; i <= 12; i++) {
         const tempMonth = dayjs(new Date()).month(i - 1).format('YYYY-MM');
@@ -84,8 +84,16 @@ function useRecord() {
       return {'date': year, 'dateData': yearData};
     }
   };
+  const [chartsDataObj, setChartsDataObj] = useState(chartsData(timeRanges!, category!));
+  const chartsDataCB = useCallback(chartsData, []);
+  useEffect(() => {
+    setChartsDataObj(() => chartsDataCB(timeRanges!, category!));
+  }, [timeRanges, category, chartsDataCB]);
 
-  return {records, createRecord, rebuildRecords, chartsData};
+
+
+
+  return {records, createRecord, rebuildRecords, chartsDataObj}
 }
 
 export {useRecord};

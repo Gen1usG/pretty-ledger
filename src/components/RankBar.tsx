@@ -14,7 +14,7 @@ function RankBar(props: { barWidth: number }) {
   const barRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     barRef.current!.style.width =  props.barWidth + '%';
-  }, []);
+  }, [props.barWidth]);
   return (
     <RankBarS className="rank-bar" ref={barRef}/>
   );
