@@ -1,14 +1,36 @@
 import {Record} from '../views/Money';
 import {useCallback, useEffect, useState} from 'react';
 import dayjs from 'dayjs';
+import {recordId} from './recordId';
 
 type rebuildRecord = { date: string, records: Record[] }
 
 // [{record1},{record2}]
 function useRecord(timeRanges?: 'week' | 'month' | 'year', category?: '-' | '+') {
   const [records, setRecords] = useState(JSON.parse(window.localStorage.getItem('records') || '[]'));
+
+  const deleteRecord = (id: number) => {
+    const index = findIndex(id);
+    records.splice(index, 1);
+    setRecords(records);
+    window.localStorage.setItem('records', JSON.stringify(records));
+  };
+
+  const findIndex = (id: number) => {
+    let index = -1;
+    for (let i = 0; i < records.length; i++) {
+      if (id === records[i].id) {
+        index = i
+      }
+    }
+    return index;
+  };
+  const findRecord = (id: number) => {
+    return records.filter((r: Record) => r.id === id)[0];
+  };
   const createRecord = (newRecord: Record) => {
     newRecord.createAt = new Date().toISOString();
+    newRecord.id = recordId();
     records.push(newRecord);
     setRecords(records);
     window.localStorage.setItem('records', JSON.stringify(records));
@@ -91,9 +113,7 @@ function useRecord(timeRanges?: 'week' | 'month' | 'year', category?: '-' | '+')
   }, [timeRanges, category, chartsDataCB]);
 
 
-
-
-  return {records, createRecord, rebuildRecords, chartsDataObj}
+  return {records, createRecord, rebuildRecords, chartsDataObj, findRecord, deleteRecord};
 }
 
 export {useRecord};
