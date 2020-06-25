@@ -5,6 +5,7 @@ import {Charts} from './views/Charts';
 import {NoMatch} from './views/NoMatch';
 import {Money} from './views/Money';
 import {CustomTag} from './views/CustomTag';
+import {EditTag} from './views/EditTag';
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
         </Route>
         <Route exact path="/CustomTag/:category">
           <CustomTag/>
+        </Route>
+        <Route exact path="/EditTag/:id">
+          <EditTag/>
         </Route>
         <Route>
           <NoMatch/>
