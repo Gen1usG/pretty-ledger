@@ -12,6 +12,7 @@ export type Record = {
   account: number
   category: '-' | '+'
   createAt: string
+  id:number
 }
 
 function Money() {
@@ -19,7 +20,7 @@ function Money() {
   const [category, setCategory] = useState<('-' | '+')>('-');
   const [record, setRecord] = useState<Record>({
     tag: {id: 0, name: '', tagName: '', category: '-',show:true}, note: '', account: 0, category: category, createAt: ''
-  });
+  ,id:-1});
 
   const toggleCategory = (itemCategory: ('-' | '+')) => {
     setCategory(itemCategory);
@@ -36,7 +37,7 @@ function Money() {
     createRecord(record);
     setRecord({
       tag: {id: 0, name: '', tagName: '', category: '-',show:true}, note: '', account: 0, category: category, createAt: ''
-    })
+    ,id:-1})
   };
 
   return (

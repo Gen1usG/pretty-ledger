@@ -8,6 +8,7 @@ import {Record} from './Money';
 import {BeautyIcon} from '../components/BeautyIcon';
 import {NoData} from '../components/NoData';
 import {RecordsStage, StatisticsWrapper} from '../components/styledComponent/StatisticsWrapper';
+import {Link} from 'react-router-dom';
 
 function Statistics() {
   const {rebuildRecords} = useRecord();
@@ -32,7 +33,9 @@ function Statistics() {
   };
   const countAccount = (tags: any[], category: '-' | '+') => {
     let sum = 0;
-    if(!tags){return}
+    if (!tags) {
+      return;
+    }
     if (tags[0] && tags[0].tag) {
       tags.filter(t => t.category === category).forEach(i => {
         sum += i.account;
@@ -42,7 +45,7 @@ function Statistics() {
       tags.forEach(item => {
         const categoryArr = item.records.filter((t: Record) => t.category === category);
         categoryArr.forEach((r: Record) => {
-          tempArr.length===0?tempArr[0]=r:tempArr.splice(tempArr.length - 1, 0, r);
+          tempArr.length === 0 ? tempArr[0] = r : tempArr.splice(tempArr.length - 1, 0, r);
         });
       });
 
@@ -89,11 +92,12 @@ function Statistics() {
           </div>
         </div>
 
-        <RecordsStage  ref={refUl}>
+        <RecordsStage ref={refUl}>
           <NoData show={staRecords[selectedDate.year][selectedDate.month].length === 0}/>
           {staRecords && staRecords[selectedDate.year][selectedDate.month].map((item: { date: string, records: Record[] }) => {
             return (
               <li key={item.date}>
+
                 <div className='dateNtotal'>
                   <div
                     className="day-date">{dayjs(item.date).format('MM')}月{dayjs(item.date).format('DD')}日 {dayHash[dayjs(item.date).format('d')]}</div>
@@ -106,15 +110,18 @@ function Statistics() {
                   {item.records.map((listItem: Record) => {
                     return (
                       <li key={listItem.createAt}>
-                        <div className="tagNameOrNote">
-                          <BeautyIcon name={listItem.tag.name!} className='beautyIcon'/>
-                          {listItem.note === '' ? listItem.tag.tagName : listItem.note}
-                        </div>
-                        <div className="account">{listItem.category === '+' ? '' : '-'}{listItem.account}</div>
+                        <Link to={`/editTag/${listItem.id}`}>
+                          <div className="tagNameOrNote">
+                            <BeautyIcon name={listItem.tag.name!} className='beautyIcon'/>
+                            {listItem.note === '' ? listItem.tag.tagName : listItem.note}
+                          </div>
+                          <div className="account">{listItem.category === '+' ? '' : '-'}{listItem.account}</div>
+                        </Link>
                       </li>
                     );
                   })}
                 </ul>
+
               </li>
             );
           })}
