@@ -85,8 +85,9 @@ export const RecordsStage = styled.ul`
       }
     }
   }
+  
   .record-list{
-    >li{
+    >li a{
       display: flex;
       justify-content: space-between;
       align-items: center;  
