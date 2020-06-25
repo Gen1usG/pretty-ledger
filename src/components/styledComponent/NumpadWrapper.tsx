@@ -15,7 +15,7 @@ const NumpadWrapper = styled.section`
       display: flex;
       align-items: center;
       flex-wrap: nowrap;
-      width: 100vw;
+      width: 100%;
       height:45px;
       font-size: 14px;
       .note{

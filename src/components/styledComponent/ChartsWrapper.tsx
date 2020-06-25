@@ -92,6 +92,9 @@ const ChartsWrapper = styled.div`
       }
       .rankList{
          overflow: auto;
+         ::-webkit-scrollbar {
+            display: none; /* Chrome Safari */
+         }
         > li{
           margin:8px;
           display: flex;

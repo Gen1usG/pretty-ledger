@@ -4,6 +4,7 @@ export const CustomTagWrapper = styled.section`
     display: flex;
     flex-direction: column;
     height: 100vh;
+    
     .icon {
       vertical-align: -0.15em;
       overflow: hidden;
@@ -34,6 +35,9 @@ export const CustomTagWrapper = styled.section`
     .tags-stage{
       flex-grow: 1;
       overflow: auto;
+      ::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+   }
       .showTags button::after{
          content: '';
          background-color: #fff;

@@ -10,6 +10,9 @@ const TagsWrapper = styled.ul`
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
+  ::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+   }
 `;
 const TagWrapper = styled.div`
   width: 25%;
@@ -57,7 +60,7 @@ function Tags(props: Props) {
   const refTagWrapper: any = useRef(null);
 
   useEffect(() => {
-    refTagWrapper.current.style.height = (window.screen.height - 57 - 245 - 54) + 'px';
+    refTagWrapper.current.style.height = (document.body.clientHeight - 57 - 245 - 54) + 'px';
   }, []);
 
 

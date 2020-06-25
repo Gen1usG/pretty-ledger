@@ -56,6 +56,7 @@ const EditTagWrapper = styled.div`
   
  .delete{
     outline: none;
+    color: #fff;
     margin:50px auto;
     width: 120px;
     font-size: 20px;

@@ -69,6 +69,9 @@ export  const StatisticsWrapper = styled.div`
 
 export const RecordsStage = styled.ul` 
   overflow: scroll;
+  ::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+   }
   .dateNtotal{
     border-bottom: 1px solid rgba(167,167,167,.1);
     .day-income,.day-expenditure,.day-date{
