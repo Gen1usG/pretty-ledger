@@ -6,14 +6,14 @@ import {useTags} from '../lib/useTags';
 import {Tag} from '../lib/defaultTags';
 import {CustomTagWrapper} from '../components/styledComponent/CustomTagWrapper';
 import {Input, message, Modal} from 'antd';
-import 'antd/dist/antd.css';
-import classNames from 'classnames';
+
 const modalButtonStyle = {
-  outline:'none',
-  borderColor:"#ffda44",
+  outline: 'none',
+  borderColor: "#ffda44",
   backgroundColor: "#ffda44",
-  color:'#334444'
+  color: '#334444'
 };
+
 function CustomTag() {
   const {category: paramsCategory} = useParams();
   const [category, setCategory] = useState(paramsCategory);
@@ -48,19 +48,30 @@ function CustomTag() {
   };
 
   const onCreateTag = () => {
+    setNewTagName('');
     setConfirmVisible(true);
   };
 
+  const closeModal = () => {
+    return new Promise((resolve) => {
+      setConfirmVisible(false);
+      resolve();
+    });
+  };
   const okModal = () => {
-    if (newTagName === '') return message.info('标签名不能为空');
-    // eslint-disable-next-line
-    if (newTagName.replace(/[^\x00-\xff]/g, 'aa').length > 8) return message.info('最多4个字或8个字母');
-    createTag(newTagName, category);
-    setConfirmVisible(false);
-    message.info('成功创建标签');
+    closeModal().then(
+      () => {
+        if (newTagName === '') return message.info('标签名不能为空');
+        // eslint-disable-next-line
+        if (newTagName.replace(/[^\x00-\xff]/g, 'aa').length > 8) return message.info('最多4个字或8个字母');
+        createTag(newTagName, category);
+
+        message.info('成功创建标签');
+      }
+    );
+
   };
   const cancelModal = () => {
-    setNewTagName('');
     setConfirmVisible(false);
   };
 
@@ -69,10 +80,11 @@ function CustomTag() {
       <Modal title="请输入标签名" visible={confirmVisible}
              width='300px' destroyOnClose={true}
              onCancel={cancelModal} onOk={okModal}
-             okText={'确认'} cancelText={'取消'} okButtonProps={{style:modalButtonStyle}}>
+             okText={'确认'} cancelText={'取消'} okButtonProps={{style: modalButtonStyle}}>
         <Input placeholder="4个汉字或8个字母" id='newTagNameInput'
                onChange={(e) => {
-          setNewTagName(e.target.value)}}
+                 setNewTagName(e.target.value);
+               }}
         />
       </Modal>
       <div className="topBar">

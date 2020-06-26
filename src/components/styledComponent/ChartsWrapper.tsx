@@ -91,6 +91,7 @@ const ChartsWrapper = styled.div`
         }
       }
       .rankList{
+         margin-bottom: 0;
          overflow: auto;
          ::-webkit-scrollbar {
             display: none; /* Chrome Safari */

@@ -10,14 +10,16 @@ const Wrapper = styled.div`
 `;
 const Main = styled.div`
     overflow: auto;
-    height: 100vh - 57px;
     flex-grow: 1;
+    ::-webkit-scrollbar {
+      display: none;
+   }
 `;
 
 function Layout(props: any) {
   return (
     <Wrapper>
-      <Main data-x='fuck'>
+      <Main id={'main'}>
         {props.children}
       </Main>
       <Nav/>

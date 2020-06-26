@@ -6,6 +6,7 @@ import React from 'react';
 const NavWrapper = styled.ul`
   display: flex;
   background: #fff;
+  margin-bottom: 0;
   > li{
     width: 33.33%;
     >a { 
@@ -32,6 +33,12 @@ const NavWrapper = styled.ul`
         .icon{
           fill:#ffda44;
         }
+        &:hover{
+          color: #ffda44;
+        }
+      }
+      &:hover{
+        color:black;
       }
     }
   }

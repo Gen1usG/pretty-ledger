@@ -68,6 +68,7 @@ export  const StatisticsWrapper = styled.div`
 `;
 
 export const RecordsStage = styled.ul` 
+  margin-bottom: 0;
   overflow: scroll;
   ::-webkit-scrollbar {
       display: none; /* Chrome Safari */

@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom';
 
 const TagsWrapper = styled.ul`
   overflow-y: auto;
+  margin-bottom: 0;
   display: flex;
   flex-wrap: wrap;
   ::-webkit-scrollbar {
@@ -15,6 +16,7 @@ const TagsWrapper = styled.ul`
    }
 `;
 const TagWrapper = styled.div`
+  cursor: pointer;
   width: 25%;
   max-height: 70px;
   display: flex;
@@ -61,6 +63,7 @@ function Tags(props: Props) {
   const refTagWrapper: any = useRef(null);
 
   useEffect(() => {
+    console.log(document.body.clientHeight);
     refTagWrapper.current.style.height = (document.body.clientHeight - 57 - 245 - 54) + 'px';
   }, []);
 

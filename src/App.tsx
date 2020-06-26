@@ -9,6 +9,7 @@ import {EditTag} from './views/EditTag';
 import styled from 'styled-components';
 
 const AppWrapper = styled.div`
+    height: 100vh;
    background-color: #fff;
    margin:0 auto;
    max-width:450px;
