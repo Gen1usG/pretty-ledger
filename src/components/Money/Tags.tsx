@@ -16,6 +16,7 @@ const TagsWrapper = styled.ul`
 `;
 const TagWrapper = styled.div`
   width: 25%;
+  max-height: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;

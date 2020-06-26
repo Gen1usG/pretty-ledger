@@ -4,7 +4,7 @@ export const CustomTagWrapper = styled.section`
     display: flex;
     flex-direction: column;
     height: 100vh;
-    
+    width: 100%;
     .icon {
       vertical-align: -0.15em;
       overflow: hidden;
@@ -112,13 +112,13 @@ export const CustomTagWrapper = styled.section`
       >button{
         width: 100%;
         background-color: #fff;
-        border:none;
+        border: none;
+        border-top:1px solid rgba(0,0,0,.2);
         display: flex;
         align-items: center;
         justify-content: center;
         padding:15px 0;
         outline: none;
-        box-shadow: 0 0 0 .5px rgba(0,0,0,.5);
         .icon{
           width: 17px;
           height: 17px;

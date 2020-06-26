@@ -5,7 +5,15 @@ import {useParams, useHistory} from "react-router-dom";
 import {useTags} from '../lib/useTags';
 import {Tag} from '../lib/defaultTags';
 import {CustomTagWrapper} from '../components/styledComponent/CustomTagWrapper';
-
+import {Input, message, Modal} from 'antd';
+import 'antd/dist/antd.css';
+import classNames from 'classnames';
+const modalButtonStyle = {
+  outline:'none',
+  borderColor:"#ffda44",
+  backgroundColor: "#ffda44",
+  color:'#334444'
+};
 function CustomTag() {
   const {category: paramsCategory} = useParams();
   const [category, setCategory] = useState(paramsCategory);
@@ -13,6 +21,9 @@ function CustomTag() {
   const {tags, findTag, updateTags, createTag} = useTags();
   const [showTagList, setShowTagList] = useState<Tag[]>([]);
   const [unshowTagList, setUnshowTagList] = useState<Tag[]>([]);
+  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
+  const [newTagName, setNewTagName] = useState('');
+
 
   const onChangeCategory = (value: '-' | '+') => {
     setCategory(value);
@@ -37,16 +48,33 @@ function CustomTag() {
   };
 
   const onCreateTag = () => {
-    let tagName = window.prompt('请输入标签名（4个字或8个字母）') as string;
-    if (tagName === null) return;
-    if (tagName === '') return;
+    setConfirmVisible(true);
+  };
+
+  const okModal = () => {
+    if (newTagName === '') return message.info('标签名不能为空');
     // eslint-disable-next-line
-    if (tagName.replace(/[^\x00-\xff]/g, 'aa').length > 8) return alert('最多4个字或8个字母');
-    createTag(tagName, category);
+    if (newTagName.replace(/[^\x00-\xff]/g, 'aa').length > 8) return message.info('最多4个字或8个字母');
+    createTag(newTagName, category);
+    setConfirmVisible(false);
+    message.info('成功创建标签');
+  };
+  const cancelModal = () => {
+    setNewTagName('');
+    setConfirmVisible(false);
   };
 
   return (
     <CustomTagWrapper>
+      <Modal title="请输入标签名" visible={confirmVisible}
+             width='300px' destroyOnClose={true}
+             onCancel={cancelModal} onOk={okModal}
+             okText={'确认'} cancelText={'取消'} okButtonProps={{style:modalButtonStyle}}>
+        <Input placeholder="4个汉字或8个字母" id='newTagNameInput'
+               onChange={(e) => {
+          setNewTagName(e.target.value)}}
+        />
+      </Modal>
       <div className="topBar">
         <div className='topBar-title'>
           <Icon name='left' className='icon' onClick={() => {

@@ -1,19 +1,30 @@
-*,*::before,*::after{
+*, *::before, *::after {
   padding: 0;
-  margin:0;
+  margin: 0;
   box-sizing: border-box;
   font-size: 17px;
   font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;;
 }
 
-ul,ol,li{
+ul, ol, li {
   list-style: none;
   font-size: inherit;
 }
 
-a{
+a {
   text-decoration: none;
-  color:inherit;
+  color: inherit;
 }
+
+#newTagNameInput {
+  &.ant-input:hover {
+    border-color: #ffda44;
+  }
+
+  &.ant-input:focus {
+    box-shadow: 0 0 0 2px rgba(255, 218, 68, 0.2);
+  }
+}
+
 
 

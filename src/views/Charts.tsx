@@ -218,7 +218,7 @@ function Charts() {
                   <BeautyIcon name={d.tag} className='beautyIcon'/>
                   <div className="rank-description-wrapper">
                     <div className="rank-title">
-                      <div className="rank-left"><span>{d.tagName}</span>
+                      <div className="rank-left"><span>{d.tagName}&nbsp;</span>
                         <span>{((d.total / chartsSeriesData.total) * 100).toFixed(1) + '%'}</span></div>
                       <div className="rank-right">{d.total.toFixed(2)}</div>
                     </div>
