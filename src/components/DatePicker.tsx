@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {useRecord} from '../lib/useRecord';
 
 const DatePickerWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
   left: 0;

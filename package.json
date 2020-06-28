@@ -1,7 +1,7 @@
 {
   "name": "pretty-ledger",
   "version": "0.1.0",
-  "homepage": "https://gen1usg.github.io/banana-ledger-website/",
+  "homepage": "https://gen1usg.gitee.io/banana-ledger-website/",
   "private": true,
   "dependencies": {
     "@babel/core": "7.9.0",

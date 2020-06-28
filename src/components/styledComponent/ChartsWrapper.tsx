@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const ChartsWrapper = styled.div`
+    position: relative;
     %iconComment{
       vertical-align: -0.15em;
       overflow: hidden;
@@ -31,7 +32,7 @@ const ChartsWrapper = styled.div`
         width: 100%;       
         height:100%;
         background-color: rgba(0,0,0,.5);
-        position: fixed;
+        position: absolute;
         top:74px;
         z-index: 100;
         .category-selector{

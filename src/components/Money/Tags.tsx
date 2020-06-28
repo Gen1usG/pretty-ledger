@@ -66,6 +66,7 @@ function Tags(props: Props) {
     const resize = () => {
       refTagWrapper.current.style.height = (document.body.clientHeight - 57 - 245 - 54) + 'px';
     };
+    resize();
     window.onresize = resize;
     return (() => {
       window.removeEventListener('resize', resize);

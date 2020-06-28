@@ -168,6 +168,7 @@ function Charts() {
     const resize = () => {
       rankRef.current!.style.height = (document.body.clientHeight - 388) + 'px';
     };
+    resize();
     window.onresize = resize;
     return (() => {
       window.removeEventListener('resize', resize);

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export  const StatisticsWrapper = styled.div`
+    position: relative;
     header{
       background-color: #ffda44;
       font-family: 幼圆,serif;
