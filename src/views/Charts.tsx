@@ -163,17 +163,24 @@ function Charts() {
     return resultArr;
   }, [dataObj]);
   const rankRef = useRef<HTMLUListElement>(null);
+
   useEffect(() => {
-    rankRef.current!.style.height = (document.body.clientHeight - 388) + 'px';
+    const resize = () => {
+      rankRef.current!.style.height = (document.body.clientHeight - 388) + 'px';
+    };
+    window.onresize = resize;
+    return (() => {
+      window.removeEventListener('resize', resize);
+    });
   }, []);
 
   const showNoData = () => {
     if (!dataObj) return true;
     let show = true;
-    dataObj.dateData.forEach(item=>{
-      if(item.length!==0) show = false;
+    dataObj.dateData.forEach(item => {
+      if (item.length !== 0) show = false;
     });
-    return show
+    return show;
   };
 
   return (

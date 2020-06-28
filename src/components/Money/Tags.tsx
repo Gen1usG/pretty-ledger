@@ -63,14 +63,18 @@ function Tags(props: Props) {
   const refTagWrapper: any = useRef(null);
 
   useEffect(() => {
-    console.log(document.body.clientHeight);
-    refTagWrapper.current.style.height = (document.body.clientHeight - 57 - 245 - 54) + 'px';
+    const resize = () => {
+      refTagWrapper.current.style.height = (document.body.clientHeight - 57 - 245 - 54) + 'px';
+    };
+    window.onresize = resize;
+    return (() => {
+      window.removeEventListener('resize', resize);
+    });
   }, []);
-
 
   useEffect(() => {
     setTagList(tags.filter(t => t.category === props.category).filter(t => t.show));
-  }, [props.category,tags]);
+  }, [props.category, tags]);
 
   useEffect(() => {
     setSelectedTag(props.tag.id!);

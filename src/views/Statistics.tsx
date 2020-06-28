@@ -56,8 +56,13 @@ function Statistics() {
     return sum.toFixed(2);
   };
   const refUl = useRef<any>(null);
+
   useEffect(() => {
-    refUl.current.style.height = (document.body.clientHeight - 38 - 60 - 57) + 'px';
+    const resize  = ()=>{refUl.current.style.height = (document.body.clientHeight - 38 - 60 - 57) + 'px'};
+    window.onresize = resize;
+    return (()=>{
+      window.removeEventListener('resize', resize);
+    })
   }, []);
 
   return (
