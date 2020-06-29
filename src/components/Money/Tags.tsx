@@ -64,7 +64,7 @@ function Tags(props: Props) {
 
   useEffect(() => {
     const resize = () => {
-      refTagWrapper.current.style.height = (document.body.clientHeight - 57 - 245 - 54) + 'px';
+      refTagWrapper.current.style.height = (window.innerHeight - 57 - 245 - 54) + 'px';
     };
     resize();
     window.onresize = resize;

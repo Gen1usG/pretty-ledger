@@ -166,7 +166,7 @@ function Charts() {
 
   useEffect(() => {
     const resize = () => {
-      rankRef.current!.style.height = (document.body.clientHeight - 388) + 'px';
+      rankRef.current!.style.height = (window.innerHeight - 388) + 'px';
     };
     resize();
     window.onresize = resize;

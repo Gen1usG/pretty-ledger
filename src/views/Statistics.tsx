@@ -58,7 +58,7 @@ function Statistics() {
   const refUl = useRef<any>(null);
 
   useEffect(() => {
-    const resize  = ()=>{refUl.current.style.height = (document.body.clientHeight - 38 - 60 - 57) + 'px'};
+    const resize  = ()=>{refUl.current.style.height = (window.innerHeight - 38 - 60 - 57) + 'px'};
     resize();
     window.onresize = resize;
     return (()=>{

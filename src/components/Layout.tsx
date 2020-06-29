@@ -7,8 +7,12 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     
+    
 `;
 const Main = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     overflow: auto;
     flex-grow: 1;
     ::-webkit-scrollbar {
